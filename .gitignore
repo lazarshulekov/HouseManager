@@ -1,0 +1,9 @@
+bin
+obj
+*.dll
+
+*.pdb
+
+\.vs/HouseManager/v15/\.suo
+
+\.vs/config/applicationhost\.config

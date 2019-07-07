@@ -1,0 +1,71 @@
+@using BLL.Models
+@model IEnumerable<HouseManager.ViewModels.ExpenseViewModel>
+
+@{
+    ViewData["Title"] = "Expenses";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Expenses</h2>
+@if (!((bool)ViewData["IsPropertyOwner"]))
+{
+    <p>
+        <a asp-action="Create">Create New</a>
+    </p>
+}
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+
+                @Html.DisplayNameFor(model => model.ExpenseId)
+            </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BuildingView)
+                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PropertyViewModel)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Expense)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsPaid)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.CreationDate)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ExpenseId)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.BuildingView.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PropertyViewModel.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Expense)
+            </td>
+            <td>
+                @Html.CheckBoxFor(modelItem => item.IsPaid, new { @disabled = "disabled" })
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CreationDate)
+            </td>
+    @if(!((bool)ViewData["IsPropertyOwner"])){
+        <td>
+            <a asp-action="Delete" asp-route-id="@item.ExpenseId">Delete</a>|
+            <a asp-action="TogglePayment" asp-route-id="@item.ExpenseId">Mark as Paid</a>
+        </td>
+        }
+        </tr>
+}
+    </tbody>
+</table>

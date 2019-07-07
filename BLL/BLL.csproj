@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp1.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Remove="ExpencesService.cs" />
+    <Compile Remove="Models\PropertyTypeViewModel.cs" />
+    <Compile Remove="Models\PropertyViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="6.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Caching.Memory" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Persistence\DAL.csproj" />
+  </ItemGroup>
+
+</Project>

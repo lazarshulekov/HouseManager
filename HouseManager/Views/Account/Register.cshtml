@@ -1,0 +1,71 @@
+﻿
+@using BLL.Models
+@model BLL.Models.AppUserViewModel
+@{
+    ViewData["Title"] = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Register</h2>
+
+<form asp-action="Register">
+    <div class="form-horizontal">
+        <h4>Application User</h4>
+        <hr />
+        <div asp-validation-summary="All" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="FirstName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="FirstName" class="form-control" />
+                <span asp-validation-for="FirstName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="LastName" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="LastName" class="form-control" />
+                <span asp-validation-for="LastName" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Email" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Password" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Password" class="form-control" type="password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Phone" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Phone" class="form-control" />
+                <span asp-validation-for="Phone" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Rank" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Rank" class="form-control" />
+                <span asp-validation-for="Rank" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label asp-for="Banned" class="col-md-2 control-label"></label>
+            <div class="col-md-10">
+                <input asp-for="Banned" class="checkbox-inline" type="checkbox" />
+                <span asp-validation-for="Banned" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+</form>
