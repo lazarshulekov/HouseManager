@@ -53,6 +53,7 @@ namespace HouseManager
             services.AddTransient<IPropertyTypeService, PorpertyTypeService>();
             services.AddTransient<IAppUserService, AppUserService>();
             services.AddSingleton<IExpensesService, ExpensesService>();
+            services.AddSingleton<IQuestionnairesService, QuestionnaireService>();
 
             services.AddLogging();
             //services.AddMemoryCache(x => x.ExpirationScanFrequency = TimeSpan.FromSeconds(20));

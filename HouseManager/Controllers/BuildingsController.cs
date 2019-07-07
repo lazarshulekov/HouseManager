@@ -20,8 +20,8 @@ namespace HouseManager.Controllers
 
         public BuildingsController(IBuildingService bldService, IAppUserService userService)
         {
-            bldService = bldService;
-            userService = userService;
+            this.bldService = bldService;
+            this.userService = userService;
         }
 
         // GET: Buildings

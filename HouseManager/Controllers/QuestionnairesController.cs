@@ -17,8 +17,8 @@ namespace HouseManager.Controllers
 
         public QuestionnairesController(IQuestionnairesService questionnairesService, IAppUserService appUserService)
         {
-            questionnairesService = questionnairesService;
-            appUserService = appUserService;
+            this.questionnairesService = questionnairesService;
+            this.appUserService = appUserService;
         }
 
         // GET: Questionnaires

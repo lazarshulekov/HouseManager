@@ -19,7 +19,7 @@ namespace HouseManager.Controllers
 
         public PropertyTypesController(IPropertyTypeService propertyTypeService)
         {
-            propertyTypeService = propertyTypeService;
+            this.propertyTypeService = propertyTypeService;
         }
 
         // GET: PropertyTypes

@@ -40,12 +40,12 @@ namespace HouseManager.Controllers
             IBuildingService buildingService,
             IExpensesService expensesService)
         {
-            propertyService = propertyService;
-            propertyTypeService = propertyTypeService;
-            appUserService = appUserService;
-            mapper = mapper;
-            buildingService = buildingService;
-            expensesService = expensesService;
+            this.propertyService = propertyService;
+            this.propertyTypeService = propertyTypeService;
+            this.appUserService = appUserService;
+            this.mapper = mapper;
+            this.buildingService = buildingService;
+            this.expensesService = expensesService;
         }
 
         // GET: Properties

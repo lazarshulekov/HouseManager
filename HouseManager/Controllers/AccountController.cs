@@ -31,8 +31,8 @@
             IMapper mapper,
             IAppUserService appUserService)
         {
-            mapper = mapper;
-            appUserService = appUserService;
+            this.mapper = mapper;
+            this.appUserService = appUserService;
         }
 
         public async Task<IActionResult> Index()

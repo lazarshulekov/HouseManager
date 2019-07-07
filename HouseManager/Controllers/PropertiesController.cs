@@ -34,11 +34,11 @@ namespace HouseManager.Controllers
             IMapper mapper,
             IBuildingService buildingService)
         {
-            propertyService = propertyService;
-            propertyTypeService = propertyTypeService;
-            appUserService = appUserService;
-            mapper = mapper;
-            buildingService = buildingService;
+            this.propertyService = propertyService;
+            this.propertyTypeService = propertyTypeService;
+            this.appUserService = appUserService;
+            this.mapper = mapper;
+            this.buildingService = buildingService;
         }
 
         // GET: Properties
