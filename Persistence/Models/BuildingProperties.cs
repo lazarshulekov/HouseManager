@@ -1,7 +1,5 @@
 ﻿namespace DAL.Models
 {
-    using Persistence.Models;
-
     public class BuildingProperties
     {
         public int BuildingId { get; set; }

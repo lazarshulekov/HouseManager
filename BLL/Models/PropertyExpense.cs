@@ -2,8 +2,6 @@ namespace BLL.Models
 {
     using DAL.Models;
 
-    using Persistence.Models;
-
     public class PropertyExpense
     {
         public PropertyType PropertyType { get; set; }

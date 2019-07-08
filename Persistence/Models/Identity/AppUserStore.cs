@@ -1,4 +1,4 @@
-﻿namespace Persistence.Models.Identity
+﻿namespace DAL.Models.Identity
 {
     using System;
     using System.Collections.Generic;
@@ -23,7 +23,7 @@
 
         public void Dispose()
         {
-            dbContext.Dispose();
+            this.dbContext.Dispose();
         }
 
         #region IUserStore
@@ -68,8 +68,8 @@
                 throw new ArgumentNullException(nameof(user));
             }
 
-            await dbContext.AppUsers.AddAsync(user, cancellationToken);
-            await dbContext.SaveChangesAsync(cancellationToken);
+            await this.dbContext.AppUsers.AddAsync(user, cancellationToken);
+            await this.dbContext.SaveChangesAsync(cancellationToken);
             return IdentityResult.Success;
         }
 
@@ -79,8 +79,8 @@
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            dbContext.Update(user);
-            await dbContext.SaveChangesAsync(cancellationToken);
+            this.dbContext.Update(user);
+            await this.dbContext.SaveChangesAsync(cancellationToken);
             return IdentityResult.Success;
         }
 
@@ -90,7 +90,7 @@
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            dbContext.AppUsers.Remove(user);
+            this.dbContext.AppUsers.Remove(user);
             return await Task.FromResult(IdentityResult.Success);
         }
 
@@ -101,7 +101,7 @@
                 throw new ArgumentNullException("UserId empty");
             }
             
-            return await dbContext.AppUsers.FindAsync(Convert.ToInt32(userId));
+            return await this.dbContext.AppUsers.FindAsync(Convert.ToInt32(userId));
         }
 
         public async Task<AppUser> FindByNameAsync(string normalizedUserName, CancellationToken cancellationToken)
@@ -111,7 +111,7 @@
                 throw new ArgumentNullException("UserId empty");
             }
 
-            return await dbContext.AppUsers.FirstOrDefaultAsync(
+            return await this.dbContext.AppUsers.FirstOrDefaultAsync(
                        p => p.Email == normalizedUserName,
                        cancellationToken);
         }
@@ -157,9 +157,9 @@
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            var role = await dbContext.AppRoles.FirstOrDefaultAsync(x => x.Name == roleName, cancellationToken);
+            var role = await this.dbContext.AppRoles.FirstOrDefaultAsync(x => x.Name == roleName, cancellationToken);
             var useRole = new AppUsersRoles() { AppUser = user, AppRole = role };
-            await dbContext.UsersRoles.AddAsync(useRole, cancellationToken);
+            await this.dbContext.UsersRoles.AddAsync(useRole, cancellationToken);
         }
 
         public async Task RemoveFromRoleAsync(AppUser user, string roleName, CancellationToken cancellationToken)
@@ -168,8 +168,8 @@
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            var role = await dbContext.AppRoles.FirstOrDefaultAsync(r => r.Name == roleName, cancellationToken);
-            dbContext.UsersRoles.Remove(new AppUsersRoles() { AppUser = user, AppRole = role });
+            var role = await this.dbContext.AppRoles.FirstOrDefaultAsync(r => r.Name == roleName, cancellationToken);
+            this.dbContext.UsersRoles.Remove(new AppUsersRoles() { AppUser = user, AppRole = role });
         }
 
         public async Task<IList<string>> GetRolesAsync(AppUser user, CancellationToken cancellationToken)
@@ -178,7 +178,7 @@
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return await dbContext.UsersRoles.Where(ur => ur.AppUser == user)
+            return await this.dbContext.UsersRoles.Where(ur => ur.AppUser == user)
                        .Select(ur => ur.AppRole.Name)
                        .ToListAsync(cancellationToken: cancellationToken);
         }
@@ -189,14 +189,14 @@
             {
                 throw new ArgumentNullException(nameof(user));
             }
-            return await dbContext.UsersRoles.AnyAsync(
+            return await this.dbContext.UsersRoles.AnyAsync(
                        ur => ur.AppUser == user && ur.AppRole.Name == roleName,
                        cancellationToken);
         }
 
         public async Task<IList<AppUser>> GetUsersInRoleAsync(string roleName, CancellationToken cancellationToken)
         {
-            return await dbContext.UsersRoles.Where(ur => ur.AppRole.Name == roleName)
+            return await this.dbContext.UsersRoles.Where(ur => ur.AppRole.Name == roleName)
                        .Select(ur => ur.AppUser)
                        .ToListAsync(cancellationToken: cancellationToken);
         }
@@ -235,7 +235,7 @@
 
         public async Task<AppUser> FindByEmailAsync(string normalizedEmail, CancellationToken cancellationToken)
         {
-            return await dbContext.AppUsers.FirstOrDefaultAsync(u => u.Email == normalizedEmail,cancellationToken);
+            return await this.dbContext.AppUsers.FirstOrDefaultAsync(u => u.Email == normalizedEmail,cancellationToken);
         }
 
         public async Task<string> GetNormalizedEmailAsync(AppUser user, CancellationToken cancellationToken)

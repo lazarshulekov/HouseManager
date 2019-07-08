@@ -7,8 +7,6 @@ namespace BLL
 
     using DAL.Models;
 
-    using Persistence.Models;
-
     public class BuildingService : IBuildingService
     {
         private readonly AppDbContext context;
@@ -26,42 +24,27 @@ namespace BLL
             return context.Buildings.ToList();
         }
 
-        public async Task AddAsync(BuildingViewModel bldVm)
+        public async Task AddAsync(Building building)
         {
-            var bhm = bldVm.SelectedManagers.Select(
-                b => new BuildingHousemanagers() { BuildingId = bldVm.Id, HouseManagerId = b });
-
-            var bld = new Building()
-                          {
-                              Id = bldVm.Id,
-                              City = bldVm.City,
-                              Number = bldVm.Number,
-                              Street = bldVm.Street,
-                              BuildingHouseManagers = bhm.ToList(),
-            };
-
-            context.Buildings.Add(bld);
+            context.Buildings.Add(building);
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(BuildingViewModel bldVm)
+        public async Task UpdateAsync(Building building)
         {
             var allManagers = await userService.GetHouseManagersAsync();
-            var bhm = bldVm.SelectedManagers.Select(
-                b => new BuildingHousemanagers() { BuildingId = bldVm.Id, HouseManagerId = b });
 
-            var bhmEf = context.BuildingHousemanagers.Where(x => x.BuildingId == bldVm.Id);
+            var bhmEf = context.BuildingHousemanagers.Where(x => x.BuildingId == building.Id);
 
             context.BuildingHousemanagers.RemoveRange(bhmEf);
             await context.SaveChangesAsync();
 
-            var bld = await context.Buildings.FindAsync(bldVm.Id);
-            bld.City = bldVm.City;
-            bld.Id = bldVm.Id;
-            bld.Number = bldVm.Number;
-            bld.Street = bldVm.Street;
-                                   //BuildingProperties = currentBuilding.BuildingProperties,
-            bld.BuildingHouseManagers = bhm.ToList();
+            var bld = await context.Buildings.FindAsync(building.Id);
+            bld.City = building.City;
+            bld.Id = building.Id;
+            bld.Number = building.Number;
+            bld.Street = building.Street;
+            bld.BuildingHouseManagers = building.BuildingHouseManagers;
 
             await context.SaveChangesAsync();
         }

@@ -10,8 +10,6 @@
 
     using Microsoft.EntityFrameworkCore;
 
-    using Persistence.Models;
-
     public class PropertyService : IPropertyService
     {
         private readonly AppDbContext context;

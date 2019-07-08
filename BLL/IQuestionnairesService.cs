@@ -5,8 +5,6 @@
 
     using DAL.Models;
 
-    using Persistence.Models;
-
     public interface IQuestionnairesService
     {
         Task AddAsync(string question, string userName);

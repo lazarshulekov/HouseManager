@@ -3,14 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
+using DAL.Models;
 
 namespace DAL.Migrations
 {
-    using DAL.Models;
-
     [DbContext(typeof(AppDbContext))]
-    [Migration("20170802195951_initial")]
-    partial class initial
+    [Migration("20190708193730_Issue")]
+    partial class Issue
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -18,7 +17,7 @@ namespace DAL.Migrations
                 .HasAnnotation("ProductVersion", "1.1.2")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-            modelBuilder.Entity("Persistence.Models.Building", b =>
+            modelBuilder.Entity("DAL.Models.Building", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -36,7 +35,20 @@ namespace DAL.Migrations
                     b.ToTable("Buildings");
                 });
 
-            modelBuilder.Entity("Persistence.Models.BuildingProperties", b =>
+            modelBuilder.Entity("DAL.Models.BuildingHousemanagers", b =>
+                {
+                    b.Property<int>("BuildingId");
+
+                    b.Property<int>("HouseManagerId");
+
+                    b.HasKey("BuildingId", "HouseManagerId");
+
+                    b.HasIndex("HouseManagerId");
+
+                    b.ToTable("BuildingHousemanagers");
+                });
+
+            modelBuilder.Entity("DAL.Models.BuildingProperties", b =>
                 {
                     b.Property<int>("BuildingId");
 
@@ -49,10 +61,14 @@ namespace DAL.Migrations
                     b.ToTable("BuildingProperties");
                 });
 
-            modelBuilder.Entity("Persistence.Models.Expense", b =>
+            modelBuilder.Entity("DAL.Models.Expense", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
+
+                    b.Property<DateTime>("CreationDate");
+
+                    b.Property<bool>("IsPaid");
 
                     b.Property<string>("Name")
                         .IsRequired();
@@ -62,7 +78,7 @@ namespace DAL.Migrations
                     b.ToTable("Expenses");
                 });
 
-            modelBuilder.Entity("Persistence.Models.Identity.AppRole", b =>
+            modelBuilder.Entity("DAL.Models.Identity.AppRole", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -75,7 +91,7 @@ namespace DAL.Migrations
                     b.ToTable("AppRoles");
                 });
 
-            modelBuilder.Entity("Persistence.Models.Identity.AppUser", b =>
+            modelBuilder.Entity("DAL.Models.Identity.AppUser", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -96,14 +112,12 @@ namespace DAL.Migrations
 
                     b.Property<string>("Phone");
 
-                    b.Property<int>("Rank");
-
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers");
                 });
 
-            modelBuilder.Entity("Persistence.Models.Identity.AppUsersRoles", b =>
+            modelBuilder.Entity("DAL.Models.Identity.AppUsersRoles", b =>
                 {
                     b.Property<int>("AppUserId");
 
@@ -116,29 +130,14 @@ namespace DAL.Migrations
                     b.ToTable("UsersRoles");
                 });
 
-            modelBuilder.Entity("Persistence.Models.Issue", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<bool>("Accepted");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Issues");
-                });
-
-            modelBuilder.Entity("Persistence.Models.Meeting", b =>
+            modelBuilder.Entity("DAL.Models.Meeting", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
                     b.Property<string>("Comments");
 
-                    b.Property<DateTime>("DateAndTime");
+                    b.Property<DateTime>("DateTime");
 
                     b.Property<string>("Location")
                         .IsRequired();
@@ -148,7 +147,7 @@ namespace DAL.Migrations
                     b.ToTable("Meetings");
                 });
 
-            modelBuilder.Entity("Persistence.Models.MeetingsIssues", b =>
+            modelBuilder.Entity("DAL.Models.MeetingsIssues", b =>
                 {
                     b.Property<int>("IssueId");
 
@@ -161,13 +160,13 @@ namespace DAL.Migrations
                     b.ToTable("MeetingsIssues");
                 });
 
-            modelBuilder.Entity("Persistence.Models.PropertiesExpenses", b =>
+            modelBuilder.Entity("DAL.Models.PropertiesExpenses", b =>
                 {
                     b.Property<int>("ExpenseId");
 
                     b.Property<int>("PropertyId");
 
-                    b.Property<DateTime>("DueDate");
+                    b.Property<DateTime>("CreationDate");
 
                     b.HasKey("ExpenseId", "PropertyId");
 
@@ -176,7 +175,7 @@ namespace DAL.Migrations
                     b.ToTable("PropertiesExpenses");
                 });
 
-            modelBuilder.Entity("Persistence.Models.Property", b =>
+            modelBuilder.Entity("DAL.Models.Property", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -198,7 +197,7 @@ namespace DAL.Migrations
                     b.ToTable("Properties");
                 });
 
-            modelBuilder.Entity("Persistence.Models.PropertyType", b =>
+            modelBuilder.Entity("DAL.Models.PropertyType", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -211,7 +210,7 @@ namespace DAL.Migrations
                     b.ToTable("PropertyTypes");
                 });
 
-            modelBuilder.Entity("Persistence.Models.Questionnaire", b =>
+            modelBuilder.Entity("DAL.Models.Questionnaire", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
@@ -232,25 +231,7 @@ namespace DAL.Migrations
                     b.ToTable("Questionnaires");
                 });
 
-            modelBuilder.Entity("Persistence.Models.QuestionnaireUserComments", b =>
-                {
-                    b.Property<int>("QuestionnaireId");
-
-                    b.Property<int>("AppUserId");
-
-                    b.Property<string>("Comment")
-                        .IsRequired();
-
-                    b.Property<DateTime>("CommentDate");
-
-                    b.HasKey("QuestionnaireId", "AppUserId");
-
-                    b.HasIndex("AppUserId");
-
-                    b.ToTable("QuestionnaireUserComments");
-                });
-
-            modelBuilder.Entity("Persistence.Models.QuestionnaireUserVotes", b =>
+            modelBuilder.Entity("DAL.Models.QuestionnaireUserVotes", b =>
                 {
                     b.Property<int>("UserId");
 
@@ -265,126 +246,114 @@ namespace DAL.Migrations
                     b.ToTable("QuestionnaireUserVotes");
                 });
 
-            modelBuilder.Entity("Persistence.Models.UsersFavouriteQuestionnaires", b =>
+            modelBuilder.Entity("Persistence.Models.Issue", b =>
                 {
-                    b.Property<int>("AppUserId");
+                    b.Property<int>("Id");
 
-                    b.Property<int>("QuestionnaireId");
+                    b.Property<bool>("Accepted");
 
-                    b.HasKey("AppUserId", "QuestionnaireId");
+                    b.Property<string>("Name")
+                        .IsRequired();
 
-                    b.HasIndex("QuestionnaireId");
+                    b.HasKey("Id");
 
-                    b.ToTable("UsersFavouriteQuestionnaires");
+                    b.ToTable("Issues");
                 });
 
-            modelBuilder.Entity("Persistence.Models.BuildingProperties", b =>
+            modelBuilder.Entity("DAL.Models.BuildingHousemanagers", b =>
                 {
-                    b.HasOne("Persistence.Models.Building", "Building")
+                    b.HasOne("DAL.Models.Building", "Building")
+                        .WithMany("BuildingHouseManagers")
+                        .HasForeignKey("BuildingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DAL.Models.Identity.AppUser", "HouseManager")
+                        .WithMany("BuildingHouseManagers")
+                        .HasForeignKey("HouseManagerId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("DAL.Models.BuildingProperties", b =>
+                {
+                    b.HasOne("DAL.Models.Building", "Building")
                         .WithMany("BuildingProperties")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Persistence.Models.Property", "Property")
+                    b.HasOne("DAL.Models.Property", "Property")
                         .WithMany("BuildingProperties")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Persistence.Models.Identity.AppUsersRoles", b =>
+            modelBuilder.Entity("DAL.Models.Identity.AppUsersRoles", b =>
                 {
-                    b.HasOne("Persistence.Models.Identity.AppRole", "AppRole")
+                    b.HasOne("DAL.Models.Identity.AppRole", "AppRole")
                         .WithMany("AppUsersRoles")
                         .HasForeignKey("AppRoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Persistence.Models.Identity.AppUser", "AppUser")
+                    b.HasOne("DAL.Models.Identity.AppUser", "AppUser")
                         .WithMany("AppUsersRoles")
                         .HasForeignKey("AppUserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Persistence.Models.MeetingsIssues", b =>
+            modelBuilder.Entity("DAL.Models.MeetingsIssues", b =>
                 {
                     b.HasOne("Persistence.Models.Issue", "Issue")
                         .WithMany("MeetingsIssues")
                         .HasForeignKey("IssueId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Persistence.Models.Meeting", "Meeting")
+                    b.HasOne("DAL.Models.Meeting", "Meeting")
                         .WithMany("MeetingsIssues")
                         .HasForeignKey("MeetingId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Persistence.Models.PropertiesExpenses", b =>
+            modelBuilder.Entity("DAL.Models.PropertiesExpenses", b =>
                 {
-                    b.HasOne("Persistence.Models.Expense", "Expense")
-                        .WithMany("PropertiesExpenseses")
+                    b.HasOne("DAL.Models.Expense", "Expense")
+                        .WithMany("PropertiesExpenses")
                         .HasForeignKey("ExpenseId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Persistence.Models.Property", "Property")
+                    b.HasOne("DAL.Models.Property", "Property")
                         .WithMany("PropertiesExpenses")
                         .HasForeignKey("PropertyId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Persistence.Models.Property", b =>
+            modelBuilder.Entity("DAL.Models.Property", b =>
                 {
-                    b.HasOne("Persistence.Models.Identity.AppUser", "AppUser")
+                    b.HasOne("DAL.Models.Identity.AppUser", "AppUser")
                         .WithMany("Properties")
                         .HasForeignKey("AppUserId");
 
-                    b.HasOne("Persistence.Models.PropertyType", "PropertyType")
+                    b.HasOne("DAL.Models.PropertyType", "PropertyType")
                         .WithMany("Properties")
                         .HasForeignKey("PropertyTypeId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("Persistence.Models.Questionnaire", b =>
+            modelBuilder.Entity("DAL.Models.Questionnaire", b =>
                 {
-                    b.HasOne("Persistence.Models.Identity.AppUser", "CreatedByAppUser")
+                    b.HasOne("DAL.Models.Identity.AppUser", "CreatedByAppUser")
                         .WithMany()
                         .HasForeignKey("CreatedByAppUserId");
                 });
 
-            modelBuilder.Entity("Persistence.Models.QuestionnaireUserComments", b =>
+            modelBuilder.Entity("DAL.Models.QuestionnaireUserVotes", b =>
                 {
-                    b.HasOne("Persistence.Models.Identity.AppUser", "User")
-                        .WithMany("QuestionnaireUserComments")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Persistence.Models.Questionnaire", "Questionnaire")
-                        .WithMany("QuestionnaireUserComments")
-                        .HasForeignKey("QuestionnaireId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Persistence.Models.QuestionnaireUserVotes", b =>
-                {
-                    b.HasOne("Persistence.Models.Questionnaire", "Questionnaire")
+                    b.HasOne("DAL.Models.Questionnaire", "Questionnaire")
                         .WithMany("QuestionnaireUserVotes")
                         .HasForeignKey("QuestionnaireId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("Persistence.Models.Identity.AppUser", "AppUser")
+                    b.HasOne("DAL.Models.Identity.AppUser", "AppUser")
                         .WithMany("QuestionnaireUserVotes")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("Persistence.Models.UsersFavouriteQuestionnaires", b =>
-                {
-                    b.HasOne("Persistence.Models.Identity.AppUser", "AppUser")
-                        .WithMany("UsersFavouriteQuestionnaires")
-                        .HasForeignKey("AppUserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("Persistence.Models.Questionnaire", "Questionnaire")
-                        .WithMany("UsersFavouriteQuestionnaires")
-                        .HasForeignKey("QuestionnaireId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

@@ -7,12 +7,12 @@ namespace HouseManager.AutoMapper
 {
     using BLL.Models;
 
+    using DAL.Models;
+    using DAL.Models.Identity;
+
     using global::AutoMapper;
 
     using HouseManager.ViewModels;
-
-    using Persistence.Models;
-    using Persistence.Models.Identity;
 
     public class MappingProfile : Profile
     {
@@ -32,8 +32,24 @@ namespace HouseManager.AutoMapper
             CreateMap<Questionnaire, QuestionnaireViewModel>()
                 .ForMember(x => x.Id, opts => opts.MapFrom(src => src.Id)).
                 ForMember(x => x.Question, opts => opts.MapFrom(src => src.Question));
+            CreateMap<Questionnaire, MeetingQuestionnaireViewModel>()
+                .ForMember(x => x.Id, opts => opts.MapFrom(src => src.Id)).
+                ForMember(x => x.Question, opts => opts.MapFrom(src => src.Question));
 
-            CreateMap<MeetingViewModel, Meeting>();
+
+            CreateMap<BuildingViewModel, Building>()
+                .ForMember(x => x.Id, opts => opts.MapFrom(src => src.Id)).
+                ForMember(x => x.City, opts => opts.MapFrom(src => src.City)).
+                ForMember(x => x.Number, opts => opts.MapFrom(src => src.Number)).
+                ForMember(x => x.Street, opts => opts.MapFrom(src => src.Street)).
+                ForMember(x => x.BuildingHouseManagers, opts => opts.MapFrom(src => CreateBuildingHouseManagers(src.SelectedManagers, src.Id)));
+
+            CreateMap<MeetingViewModel, Meeting>().ForMember(x => x.Id, opts => opts.MapFrom(src => src.Id))
+                .ForMember(x => x.Comments, opts => opts.MapFrom(src => src.Comments))
+                .ForMember(x => x.DateTime, opts => opts.MapFrom(src => src.DateTime))
+                .ForMember(x => x.Location, opts => opts.MapFrom(src => src.Location))
+                .ForMember(x => x.MeetingsIssues, opts => opts.MapFrom(src => CreateMeetingIssues(src.SelectedIssues, src.Id)));
+
             CreateMap<Meeting, MeetingViewModel>();
             CreateMap<PropertyViewModel, Property>();
             CreateMap<PropertyType, PropertyTypeViewModel>();
@@ -43,6 +59,11 @@ namespace HouseManager.AutoMapper
             CreateMap<AppRoleViewModel, AppRole>();
         }
 
+        private List<BuildingHousemanagers> CreateBuildingHouseManagers(IEnumerable<int> selectedManagers, int buildingId)
+        {
+            return selectedManagers.Select(x => new BuildingHousemanagers { HouseManagerId = x, BuildingId = buildingId }).ToList();
+        }
+
         private string CreateBuildingName(Property property)
         {
             var bld = property.BuildingProperties.SingleOrDefault();
@@ -50,6 +71,11 @@ namespace HouseManager.AutoMapper
             return bld != null
                        ? $"{bld.Building.Id} {bld.Building.City} {bld.Building.Street} {bld.Building.Number}"
                        : string.Empty;
+        }
+
+        private List<MeetingsIssues> CreateMeetingIssues(IEnumerable<int> selectedIssues, int meetingId)
+        {
+            return selectedIssues.Select(x => new MeetingsIssues { IssueId = x, MeetingId = meetingId }).ToList();
         }
     }
 }

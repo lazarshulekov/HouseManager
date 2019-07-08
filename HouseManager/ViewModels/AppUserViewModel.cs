@@ -1,12 +1,12 @@
-﻿namespace BLL.Models
+﻿namespace HouseManager.ViewModels
 {
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
 
+    using DAL.Models.Identity;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.Extensions.DependencyInjection;
-
-    using Persistence.Models.Identity;
 
     public class AppUserViewModel : IValidatableObject
     {

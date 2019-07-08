@@ -2,8 +2,8 @@
 {
     using System;
 
-    using Persistence.Models;
-    using Persistence.Models.Identity;
+    using DAL.Models;
+    using DAL.Models.Identity;
 
     public class UnitOfWork : IDisposable
     {

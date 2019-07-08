@@ -1,4 +1,4 @@
-﻿namespace Persistence.Models
+﻿namespace DAL.Models
 {
     using System.Collections.Generic;
 

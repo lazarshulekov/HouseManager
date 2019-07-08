@@ -1,4 +1,4 @@
-﻿namespace Persistence.Models.Identity
+﻿namespace DAL.Models.Identity
 {
     using System.Collections.Generic;
 

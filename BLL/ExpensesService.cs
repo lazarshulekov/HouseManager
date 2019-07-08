@@ -11,8 +11,6 @@ namespace BLL
 
     using Microsoft.EntityFrameworkCore;
 
-    using Persistence.Models;
-
     public class ExpensesService : IExpensesService
     {
         private readonly AppDbContext context;

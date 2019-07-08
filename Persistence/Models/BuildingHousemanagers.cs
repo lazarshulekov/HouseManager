@@ -1,8 +1,7 @@
-﻿namespace Persistence.Models
+﻿namespace DAL.Models
 {
-    using DAL.Models;
+    using DAL.Models.Identity;
 
-    using Persistence.Models.Identity;
     public class BuildingHousemanagers
     {
         public int BuildingId { get; set; }

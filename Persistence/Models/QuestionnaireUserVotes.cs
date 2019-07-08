@@ -1,6 +1,6 @@
-﻿namespace Persistence.Models
+﻿namespace DAL.Models
 {
-    using Persistence.Models.Identity;
+    using DAL.Models.Identity;
 
     public class QuestionnaireUserVotes
     {

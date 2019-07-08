@@ -2,8 +2,6 @@
 {
     using System.Collections.Generic;
 
-    using Persistence.Models;
-
     public class Building
     {
         public int Id { get; set; }

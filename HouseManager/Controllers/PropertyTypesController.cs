@@ -7,11 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-using Persistence.Models;
-
 namespace HouseManager.Controllers
 {
     using BLL;
+
+    using DAL.Models;
 
     public class PropertyTypesController : Controller
     {

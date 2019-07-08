@@ -7,6 +7,8 @@
     using BLL;
     using BLL.Models;
 
+    using DAL.Models.Identity;
+
     using global::AutoMapper;
 
     using HouseManager.ViewModels;
@@ -14,8 +16,6 @@
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
-
-    using Persistence.Models.Identity;
 
     public class AccountController : Controller
     {

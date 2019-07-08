@@ -10,7 +10,8 @@ namespace HouseManager.Controllers
 
     using BLL;
 
-    using Persistence.Models;
+    using DAL.Models;
+
     using global::AutoMapper;
 
     using HouseManager.ViewModels;

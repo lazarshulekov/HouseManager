@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Microsoft.EntityFrameworkCore;
+    using DAL.Models;
 
-    using Persistence.Models;
+    using Microsoft.EntityFrameworkCore;
 
     public class PorpertyTypeService : IPropertyTypeService
     {

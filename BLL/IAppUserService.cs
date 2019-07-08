@@ -3,9 +3,9 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Microsoft.AspNetCore.Identity;
+    using DAL.Models.Identity;
 
-    using Persistence.Models.Identity;
+    using Microsoft.AspNetCore.Identity;
 
     public interface IAppUserService
     {

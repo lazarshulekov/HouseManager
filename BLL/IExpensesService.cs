@@ -1,8 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 
-using Persistence.Models;
-
 namespace BLL
 {
     using BLL.Models;

@@ -3,7 +3,7 @@
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Persistence.Models;
+    using DAL.Models;
 
     public interface IPropertyTypeService
     {

@@ -7,6 +7,8 @@ namespace HouseManager.Controllers
 
     using DAL.Models;
 
+    using global::AutoMapper;
+
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
@@ -18,10 +20,13 @@ namespace HouseManager.Controllers
 
         private readonly IAppUserService userService;
 
-        public BuildingsController(IBuildingService bldService, IAppUserService userService)
+        private readonly IMapper mapper;
+
+        public BuildingsController(IBuildingService bldService, IAppUserService userService, IMapper mapper)
         {
             this.bldService = bldService;
             this.userService = userService;
+            this.mapper = mapper;
         }
 
         // GET: Buildings
@@ -40,13 +45,28 @@ namespace HouseManager.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,City,Street,Number,SelectedManagers")] BuildingViewModel building)
+        public async Task<IActionResult> Create(
+            [Bind("Id,City,Street,Number,SelectedManagers")]
+            BuildingViewModel building)
         {
             if (ModelState.IsValid)
             {
-                await bldService.AddAsync(building);
+                var bhm = building.SelectedManagers.Select(
+                    b => new BuildingHousemanagers() { BuildingId = building.Id, HouseManagerId = b });
+
+                var bld = new Building()
+                              {
+                                  Id = building.Id,
+                                  City = building.City,
+                                  Number = building.Number,
+                                  Street = building.Street,
+                                  BuildingHouseManagers = bhm.ToList()
+                              };
+
+                await bldService.AddAsync(bld);
                 return RedirectToAction("Index");
             }
+
             return View(building);
         }
 
@@ -91,7 +111,9 @@ namespace HouseManager.Controllers
 
             if (ModelState.IsValid)
             {
-                await bldService.UpdateAsync(building);
+                var buildingEntity = this.mapper.Map<Building>(building);
+
+                await bldService.UpdateAsync(buildingEntity);
 
                 return RedirectToAction("Index");
             }

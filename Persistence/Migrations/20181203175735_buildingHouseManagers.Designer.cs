@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using Persistence.Models;
 
 namespace DAL.Migrations
 {
+    using DAL.Models;
+
     [DbContext(typeof(AppDbContext))]
     [Migration("20181203175735_buildingHouseManagers")]
     partial class buildingHouseManagers

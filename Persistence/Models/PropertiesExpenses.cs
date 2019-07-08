@@ -1,9 +1,6 @@
-﻿namespace Persistence.Models
+﻿namespace DAL.Models
 {
     using System;
-    using System.Collections.Generic;
-
-    using Persistence.Models.Identity;
 
     public class PropertiesExpenses
     {

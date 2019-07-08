@@ -3,7 +3,7 @@ namespace BLL
     using System.Collections.Generic;
     using System.Threading.Tasks;
 
-    using Persistence.Models;
+    using DAL.Models;
 
     public interface IMeetingService
     {
@@ -16,5 +16,7 @@ namespace BLL
         Task DeleteAsync(int id);
 
         Task<Meeting> GetMeetingByIdAsync(int id);
+
+        Task<List<Questionnaire>> GetAllQuestionnaires();
     }
 }

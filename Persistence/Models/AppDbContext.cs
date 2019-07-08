@@ -1,11 +1,11 @@
-﻿namespace Persistence.Models
+﻿namespace DAL.Models
 {
-    using DAL.Models;
+    using DAL.Models.Identity;
 
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
-    using Persistence.Models.Identity;
+    using Persistence.Models;
 
     public class AppDbContext : DbContext
     {
@@ -53,7 +53,7 @@
         {
             base.OnConfiguring(optionsBuilder);
 
-            optionsBuilder.UseLoggerFactory(loggerFactory);
+            optionsBuilder.UseLoggerFactory(this.loggerFactory);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -61,11 +61,6 @@
             modelBuilder.Entity<Property>().HasKey(p => p.Id);
 
             modelBuilder.Entity<Property>().Property(p => p.Id).ValueGeneratedOnAdd();
-
-            //modelBuilder.Entity<AppUser>()
-            //    .HasMany(p => p.Properties)
-            //    .WithOne(p => p.AppUser)
-            //    .HasForeignKey(a => a.AppUserId);
 
             modelBuilder.Entity<Property>()
                 .HasOne(p => p.AppUser)
@@ -150,6 +145,8 @@
                 .HasOne(bp => bp.HouseManager)
                 .WithMany(b => b.BuildingHouseManagers)
                 .HasForeignKey(bp => bp.HouseManagerId);
+
+            modelBuilder.Entity<Issue>(ar => ar.Property(p => p.Id).ValueGeneratedNever());
 
             modelBuilder.Entity<MeetingsIssues>().HasKey(mi => new { mi.IssueId, mi.MeetingId });
 

@@ -7,7 +7,7 @@ namespace BLL
 
     public interface IBuildingService
     {
-        Task AddAsync(BuildingViewModel bld);
+        Task AddAsync(Building bld);
 
         Task DeleteAsync(int buildingId);
 
@@ -15,6 +15,6 @@ namespace BLL
 
         Task<Building> GetBuildingByIdAsync(int buildingId);
 
-        Task UpdateAsync(BuildingViewModel bld);
+        Task UpdateAsync(Building bld);
     }
 }

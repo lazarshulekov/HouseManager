@@ -2,6 +2,8 @@
 {
     using System.Collections.Generic;
 
+    using DAL.Models;
+
     public class Issue
     {
         public int Id { get; set; }

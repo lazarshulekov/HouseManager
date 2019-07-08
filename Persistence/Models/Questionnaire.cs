@@ -1,9 +1,9 @@
-﻿namespace Persistence.Models
+﻿namespace DAL.Models
 {
     using System;
     using System.Collections.Generic;
 
-    using Persistence.Models.Identity;
+    using DAL.Models.Identity;
 
     public class Questionnaire
     {

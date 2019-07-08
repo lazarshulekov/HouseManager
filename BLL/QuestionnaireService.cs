@@ -5,7 +5,7 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using Persistence.Models;
+    using DAL.Models;
 
     public class QuestionnaireService : IQuestionnairesService
     {
@@ -26,7 +26,7 @@
             var quest = new Questionnaire()
                             {
                                 CreatedByAppUser = user,
-                                DateTimeCreated = DateTime.Now,
+                                DateTimeCreated = DateTime.UtcNow,
                                 Question = question
                             };
 
@@ -90,7 +90,7 @@
         {
             var quest = await context.Questionnaires.FindAsync(questId);
 
-            return DateTime.Now - quest.DateTimeCreated < this.activePeriod;
+            return DateTime.UtcNow - quest.DateTimeCreated < this.activePeriod;
         }
     }
 }

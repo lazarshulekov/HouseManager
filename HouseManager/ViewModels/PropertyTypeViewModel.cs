@@ -1,4 +1,4 @@
-﻿namespace BLL.Models
+﻿namespace HouseManager.ViewModels
 {
     using System.ComponentModel;
 

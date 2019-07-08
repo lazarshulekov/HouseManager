@@ -7,14 +7,14 @@ namespace HouseManager
 {
     using BLL;
 
+    using DAL.Models;
+    using DAL.Models.Identity;
+
     using global::AutoMapper;
 
     using Microsoft.Extensions.Configuration;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-
-    using Persistence.Models;
-    using Persistence.Models.Identity;
 
     public class Startup
     {

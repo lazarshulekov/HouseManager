@@ -1,4 +1,4 @@
-namespace Persistence.Models.Identity
+namespace DAL.Models.Identity
 {
     using System;
     using System.Threading;
@@ -20,14 +20,14 @@ namespace Persistence.Models.Identity
         {
             if (role == null) throw new ArgumentException("Argument cannot be null or empty: AppRole.");
 
-            dbContext.AppRoles.Add(role);
+            this.dbContext.AppRoles.Add(role);
 
             return Task.FromResult(IdentityResult.Success);
         }
 
         public Task<IdentityResult> DeleteAsync(AppRole role, CancellationToken cancellationToken)
         {
-            dbContext.AppRoles.Remove(role);
+            this.dbContext.AppRoles.Remove(role);
 
             return Task.FromResult(IdentityResult.Success);
         }
@@ -38,12 +38,12 @@ namespace Persistence.Models.Identity
 
         public async Task<AppRole> FindByIdAsync(string roleId, CancellationToken cancellationToken)
         {
-            return await dbContext.AppRoles.FindAsync(roleId);
+            return await this.dbContext.AppRoles.FindAsync(roleId);
         }
 
         public async Task<AppRole> FindByNameAsync(string normalizedRoleName, CancellationToken cancellationToken)
         {
-            return await dbContext.AppRoles.FirstOrDefaultAsync(
+            return await this.dbContext.AppRoles.FirstOrDefaultAsync(
                        x => x.Name == normalizedRoleName,
                        cancellationToken);
         }

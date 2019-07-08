@@ -1,11 +1,12 @@
 ﻿using System.Collections.Generic;
-using Persistence.Models;
 
 namespace BLL
 {
     using System.Threading.Tasks;
 
     using BLL.Models;
+
+    using DAL.Models;
 
     public interface IPropertyService
     {

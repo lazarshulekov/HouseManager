@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 
-using Persistence.Models;
-
 namespace HouseManager.Controllers
 {
     using System;

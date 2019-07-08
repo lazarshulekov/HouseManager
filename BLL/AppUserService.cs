@@ -4,11 +4,11 @@ namespace BLL
     using System.Linq;
     using System.Threading.Tasks;
 
+    using DAL.Models;
+    using DAL.Models.Identity;
+
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
-
-    using Persistence.Models;
-    using Persistence.Models.Identity;
 
     public class AppUserService : IAppUserService
     {

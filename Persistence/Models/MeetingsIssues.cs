@@ -1,5 +1,7 @@
-﻿namespace Persistence.Models
+﻿namespace DAL.Models
 {
+    using Persistence.Models;
+
     public class MeetingsIssues
     {
         public int MeetingId { get; set; }

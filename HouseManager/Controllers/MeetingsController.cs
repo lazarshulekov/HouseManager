@@ -8,11 +8,14 @@ namespace HouseManager.Controllers
 
     using BLL;
 
+    using DAL.Migrations;
+    using DAL.Models;
+
     using global::AutoMapper;
 
     using HouseManager.ViewModels;
 
-    using Persistence.Models;
+    using Microsoft.AspNetCore.Mvc.Rendering;
 
     public class MeetingsController : Controller
     {
@@ -20,10 +23,13 @@ namespace HouseManager.Controllers
 
         private readonly IMeetingService meetingService;
 
-        public MeetingsController(IMapper mapper, IMeetingService meetingService)
+        private readonly IQuestionnairesService questionnairesService;
+
+        public MeetingsController(IMapper mapper, IMeetingService meetingService, IQuestionnairesService questionnairesService)
         {
             this.mapper = mapper;
             this.meetingService = meetingService;
+            this.questionnairesService = questionnairesService;
         }
         // GET: Meetings
         public async Task<ActionResult> Index()
@@ -35,31 +41,34 @@ namespace HouseManager.Controllers
         }
 
         // GET: Meetings/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
+            var quests = questionnairesService.GetAllQuestionnaires().OrderByDescending(q => q.DateTimeCreated);
+            var questViewModels = mapper.Map<List<MeetingQuestionnaireViewModel>>(quests);
+            foreach (var questionnaire in questViewModels)
+            {
+                var votes = (await questionnairesService.GetVotes(questionnaire.Id)).ToList();
+                questionnaire.Likes = votes.Count;
+            }
+
+            ViewBag.AllIssues = questViewModels;
             return View();
         }
 
         // POST: Meetings/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("MeetingId,Comments,Datetime,Location")] MeetingViewModel meeting)
+        public async Task<ActionResult> Create(
+            [Bind("MeetingId,Comments,Datetime,Location,SelectedIssues")]
+            MeetingViewModel meeting)
         {
-            if (ModelState.IsValid)
-            {
-                var meetingEntity = new Meeting()
-                                        {
-                                            Comments = meeting.Comments,
-                                            DateTime = meeting.Datetime,
-                                            Location = meeting.Location
-                                        };
+            if (!ModelState.IsValid) return View(meeting);
 
-                await meetingService.AddAsync(meetingEntity);
+            var meetingEntity = mapper.Map<Meeting>(meeting);
 
-                return RedirectToAction("Index");
-            }
+            await meetingService.AddAsync(meetingEntity);
 
-            return View(meeting);
+            return RedirectToAction("Index");
 
         }
 
@@ -67,24 +76,42 @@ namespace HouseManager.Controllers
         public async Task<ActionResult> Edit(int id)
         {
             var meeting = await meetingService.GetMeetingByIdAsync(id);
-
             if (meeting == null)
             {
                 return NotFound();
             }
+            var quests = questionnairesService.GetAllQuestionnaires().OrderByDescending(q => q.DateTimeCreated);
+            var questViewModels = mapper.Map<List<MeetingQuestionnaireViewModel>>(quests);
+            foreach (var questionnaire in questViewModels)
+            {
+                var votes = (await questionnairesService.GetVotes(questionnaire.Id)).ToList();
+                questionnaire.Likes = votes.Count;
+            }
 
-            return View(Mapper.Map<MeetingViewModel>(meeting));
+            var meetingIssues = meeting.MeetingsIssues != null ? meeting.MeetingsIssues.Select(q => q.IssueId): new List<int>();
+
+             MultiSelectList options =
+                new MultiSelectList(questViewModels, "Id", "QuestionAndLikes", meetingIssues);
+            ViewBag.AllIssues = options;
+
+            var vm = mapper.Map<MeetingViewModel>(meeting);
+
+            return View(vm);
         }
 
         // POST: Meetings/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit([Bind("Id,Comments,Datetime,Location")] MeetingViewModel meeting)
+        public async Task<ActionResult> Edit([Bind("Id,Comments,Datetime,Location,SelectedIssues")] MeetingViewModel meeting)
         {
-            var meetingEntity = mapper.Map<Meeting>(meeting);
-            await meetingService.UpdateAsync(meetingEntity);
+            if (ModelState.IsValid)
+            {
+                var meetingEntity = mapper.Map<Meeting>(meeting);
+                await meetingService.UpdateAsync(meetingEntity);
 
-            return RedirectToAction("Index");
+                return RedirectToAction("Index");
+            }
+            return View(meeting);
         }
 
         // GET: Meetings/Delete/5
