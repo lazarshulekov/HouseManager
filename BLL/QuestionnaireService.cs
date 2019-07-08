@@ -1,47 +1,96 @@
 ﻿namespace BLL
 {
+    using System;
     using System.Collections.Generic;
+    using System.Linq;
     using System.Threading.Tasks;
-
-    using AutoMapper;
 
     using Persistence.Models;
 
     public class QuestionnaireService : IQuestionnairesService
     {
+        private readonly TimeSpan activePeriod = TimeSpan.FromDays(30);
         private readonly AppDbContext context;
+        private readonly IAppUserService appUserService;
 
-        private readonly IMapper mapper;
-
-        public QuestionnaireService(AppDbContext context, IMapper mapper)
+        public QuestionnaireService(AppDbContext context, IAppUserService appUserService)
         {
             this.context = context;
-            this.mapper = mapper;
-        }
-        public Task AddAsync(Questionnaire quest)
-        {
-            throw new System.NotImplementedException();
+            this.appUserService = appUserService;
         }
 
-        public Task DeleteAsync(int questId)
+        public async Task AddAsync(string question, string userName)
         {
-            throw new System.NotImplementedException();
+            var user = await appUserService.GetAppUserByUserNameAsync(userName);
+
+            var quest = new Questionnaire()
+                            {
+                                CreatedByAppUser = user,
+                                DateTimeCreated = DateTime.Now,
+                                Question = question
+                            };
+
+            await context.Questionnaires.AddAsync(quest);
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<IEnumerable<QuestionnaireUserVotes>> GetVotes(int questId)
+        {
+            return context.QuestionnaireUserVotes.Where(q => q.QuestionnaireId == questId);
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            var quest = await context.Questionnaires.FindAsync(id);
+            context.Questionnaires.Remove(quest);
+            await context.SaveChangesAsync();
         }
 
         public List<Questionnaire> GetAllQuestionnaires()
         {
-            throw new System.NotImplementedException();
-            //return await context.Questionnaires.Include(p => p.PropertyType).Include(p => p.AppUser).Include(p => p.BuildingProperties).ThenInclude(x => x.Building).ToListAsync();
+            return context.Questionnaires.ToList();
         }
 
-        public Task<Questionnaire> GetQuestionnaireByIdAsync(int questId)
+        public async Task<Questionnaire> GetQuestionnaireByIdAsync(int id)
         {
-            throw new System.NotImplementedException();
+            return await context.Questionnaires.FindAsync(id);
         }
 
-        public Task UpdateAsync(Questionnaire questionnaire)
+        public async Task UpdateAsync(int id, string question)
         {
-            throw new System.NotImplementedException();
+            var quest = await  context.Questionnaires.FindAsync(id);
+            quest.Question = question;
+
+            await context.SaveChangesAsync();
+        }
+
+        public async Task ToggleVoteAsync(int questId, string userName)
+        {
+            var userId = await appUserService.GetUserIdByUserNameAsync(userName);
+            var questVote = await context.QuestionnaireUserVotes.FindAsync(userId, questId);//SingleOrDefault(q => q.UserId == userId && q.QuestionnaireId == questId);
+            if (questVote != null)
+            {
+                questVote.Agrees = !questVote.Agrees;
+            }
+            else
+            {
+                await context.QuestionnaireUserVotes.AddAsync(
+                    new QuestionnaireUserVotes()
+                        {
+                            Agrees = true,
+                            UserId = userId,
+                            QuestionnaireId = questId
+                        });
+            }
+
+            await context.SaveChangesAsync();
+        }
+
+        public async Task<bool> IsActive(int questId)
+        {
+            var quest = await context.Questionnaires.FindAsync(questId);
+
+            return DateTime.Now - quest.DateTimeCreated < this.activePeriod;
         }
     }
 }

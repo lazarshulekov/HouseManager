@@ -1,8 +1,7 @@
-@using BLL.Models
-@model IEnumerable<HouseManager.ViewModels.PropertyViewModel>
+@model IEnumerable<HouseManager.ViewModels.QuestionnaireViewModel>
 
 @{
-    ViewData["Title"] = "Имоти";
+    ViewData["Title"] = "Анкети";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
@@ -15,20 +14,8 @@
     <thead>
         <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.Area)
+                    @Html.DisplayNameFor(model => model.Question)
                 </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Comments)
-                </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AppUser.Email)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.PropertyType.Type)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BuildingName)
-            </th>
             <th></th>
         </tr>
     </thead>
@@ -36,23 +23,26 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Area)
+                @Html.DisplayFor(modelItem => item.Question)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Comments)
+                @Html.CheckBoxFor(modelItem => item.Voted, new { @disabled = "disabled" })
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.AppUser.Email)
+                @Html.DisplayFor(modelItem => item.Likes)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.PropertyType.Type)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.BuildingName)
-            </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>|
+                
+                @if(item.IsActive) {
+                <a asp-action="ToggleVote" asp-route-id="@item.Id">ToggleVote</a>
+                }
+                else
+                {
+                    <span>Inactive</span>
+                }
             </td>
         </tr>
 }

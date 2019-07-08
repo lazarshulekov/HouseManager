@@ -45,6 +45,7 @@ namespace HouseManager
                         o.Password.RequireNonAlphanumeric = false;
                         o.Password.RequiredLength = 6;
                     });
+            services.AddSingleton<IMeetingService, MeetingService>();
             services.AddTransient<IUserStore<AppUser>, AppUserStore>();
             services.AddTransient<IRoleStore<AppRole>, AppRoleStore>();
             services.AddMvc();

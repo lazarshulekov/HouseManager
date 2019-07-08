@@ -1,32 +1,56 @@
-using System;
 using System.Threading.Tasks;
 
 using Microsoft.AspNetCore.Mvc;
 
 namespace HouseManager.Controllers
 {
+    using System.Collections.Generic;
+    using System.Linq;
+
     using BLL;
 
-    using Persistence.Models;
+    using global::AutoMapper;
+
+    using HouseManager.ViewModels;
 
     public class QuestionnairesController : Controller
     {
+        public IMapper Mapper { get; }
+
         private readonly IQuestionnairesService questionnairesService;
 
         private readonly IAppUserService appUserService;
 
-        public QuestionnairesController(IQuestionnairesService questionnairesService, IAppUserService appUserService)
+        public QuestionnairesController(IQuestionnairesService questionnairesService, IAppUserService appUserService, IMapper mapper)
         {
+            this.Mapper = mapper;
             this.questionnairesService = questionnairesService;
             this.appUserService = appUserService;
         }
 
         // GET: Questionnaires
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var quests = questionnairesService.GetAllQuestionnaires();
+            var questViewModels = await GetQuestionnaireViewModels();
 
-            return View(quests);
+            return View(questViewModels);
+        }
+
+        private async Task<List<QuestionnaireViewModel>> GetQuestionnaireViewModels()
+        {
+            var quests = this.questionnairesService.GetAllQuestionnaires().OrderByDescending(q => q.DateTimeCreated);
+            var questViewModels = this.Mapper.Map<List<QuestionnaireViewModel>>(quests);
+            var userId = await this.appUserService.GetUserIdByUserNameAsync(this.User.Identity.Name);
+            foreach (var questionnaire in questViewModels)
+            {
+                var votes = (await questionnairesService.GetVotes(questionnaire.Id)).ToList();
+                var isActive = await questionnairesService.IsActive(questionnaire.Id);
+                questionnaire.Likes = votes.Count;
+                questionnaire.IsActive = isActive;
+                questionnaire.Voted = votes.Any(v => v.UserId == userId && v.Agrees);
+            }
+
+            return questViewModels;
         }
 
         // GET: Questionnaires/Details/5
@@ -44,41 +68,39 @@ namespace HouseManager.Controllers
         // POST: Questionnaires/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create(string question)
+        public async Task<ActionResult> Create([Bind("Question")] string question)
         {
-            var userId = await appUserService.GetUserIdByUserName(User.Identity.Name);
+            if (ModelState.IsValid)
+            {
+                var userName = User.Identity.Name;
+                await questionnairesService.AddAsync(question, userName);
 
-            var quest = new Questionnaire() { UserId = userId, DateTimeCreated = DateTime.Now, Question = question };
+                return RedirectToAction("Index");
+            }
 
-            await questionnairesService.AddAsync(quest);
-
-            return RedirectToAction("Index");
+            return View(question);
 
         }
 
         // GET: Questionnaires/Edit/5
-        public ActionResult Edit(int id)
+        public async Task<ActionResult> Edit(int id)
         {
-            var quest = questionnairesService.GetQuestionnaireByIdAsync(id);
+            var quest = await questionnairesService.GetQuestionnaireByIdAsync(id);
 
             if (quest == null)
             {
                 return NotFound();
             }
 
-            return View(quest);
+            return View(Mapper.Map<QuestionnaireViewModel>(quest));
         }
 
         // POST: Questionnaires/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Edit(int id, string quest)
+        public async Task<ActionResult> Edit(int id, string question)
         {
-            var questEntity = await questionnairesService.GetQuestionnaireByIdAsync(id);
-
-            questEntity.Question = quest;
-
-            await questionnairesService.UpdateAsync(questEntity);
+            await questionnairesService.UpdateAsync(id, question);
 
             return RedirectToAction("Index");
         }
@@ -91,21 +113,23 @@ namespace HouseManager.Controllers
             return RedirectToAction("Index");
         }
 
-        //// POST: Questionnaires/Delete/5
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Delete(int id, IFormCollection collection)
-        //{
-        //    try
-        //    {
-        //        // TODO: Add delete logic here
+        public async Task<IActionResult> ToggleVote(int id)
+        {
+            await questionnairesService.ToggleVoteAsync(id, User.Identity.Name);
 
-        //        return RedirectToAction("Index");
-        //    }
-        //    catch
-        //    {
-        //        return View();
-        //    }
-        //}
+            return RedirectToAction("Index", "Questionnaires");
+        }
+
+        public async Task<IActionResult> GetAll()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                var questViewModels = await GetQuestionnaireViewModels();
+
+                return Json(questViewModels);
+            }
+
+            return Json(new List<QuestionnaireViewModel>());
+        }
     }
 }

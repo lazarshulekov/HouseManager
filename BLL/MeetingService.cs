@@ -1,51 +1,54 @@
 namespace BLL
 {
     using System.Collections.Generic;
-    using System.Linq;
     using System.Threading.Tasks;
 
-    using DAL.Models;
+    using Microsoft.EntityFrameworkCore;
 
     using Persistence.Models;
 
-    public class MeetingService
+    public class MeetingService : IMeetingService
     {
-        //private readonly IMemoryCache cache;
-
         private readonly AppDbContext context;
 
         public MeetingService(AppDbContext context)
         {
-            //cache = cache;
-            this.context = context;//new ApplicationDbContextFactory().Create(new DbContextFactoryOptions()); 
+            this.context = context;
         }
 
-        public List<Building> GetAllBuildings()
+        public async Task<List<Meeting>> GetAllMeetings()
         {
-            return Enumerable.ToList<Building>(context.Buildings);
+            return await context.Meetings.ToListAsync();
         }
 
-        public async Task AddAsync(Building bld)
+        public async Task AddAsync(Meeting meeting)
         {
-            context.Buildings.Add(bld);
+            context.Meetings.Add(meeting);
             await context.SaveChangesAsync();
         }
 
-        public async Task UpdateAsync(Building bld)
+        public async Task UpdateAsync(Meeting meeting)
         {
-            context.Buildings.Update(bld);
+            var meetingEntity = await context.Meetings.FindAsync(meeting.Id);
+            meetingEntity.DateTime = meeting.DateTime;
+            meetingEntity.Location = meeting.Location;
+            meetingEntity.Comments = meeting.Comments;
+
+            context.Meetings.Update(meetingEntity);
             await context.SaveChangesAsync();
         }
 
-        public async Task DeleteAsync(Building bld)
+        public async Task DeleteAsync(int id)
         {
-            context.Remove(bld);
+            var meeting = await context.Meetings.FindAsync(id);
+            context.Meetings.Remove(meeting);
+
             await context.SaveChangesAsync();
         }
 
-        public async Task<Building> GetBuildingByIdAsync(int buildingId)
+        public async Task<Meeting> GetMeetingByIdAsync(int id)
         {
-            return await context.Buildings.FindAsync(buildingId);
+            return await context.Meetings.FindAsync(id);
         }
     }
 }

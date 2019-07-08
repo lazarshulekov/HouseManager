@@ -17,17 +17,11 @@
 
         public string LastName { get; set; }
 
-        public int Rank { get; set; }
-
         public ICollection<AppUsersRoles> AppUsersRoles { get; set; }
 
         public ICollection<QuestionnaireUserVotes> QuestionnaireUserVotes { get; set; }
 
-        public ICollection<QuestionnaireUserComments> QuestionnaireUserComments { get; set; }
-
         public bool Banned { get; set; } // banned users cannot create Questionnaires
-
-        public ICollection<UsersFavouriteQuestionnaires> UsersFavouriteQuestionnaires { get; set; }
 
         public ICollection<Property> Properties { get; set; }
 

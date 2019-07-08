@@ -114,11 +114,6 @@ namespace HouseManager.Controllers
         // GET: PropertyTypes/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var propertyType = await propertyTypeService.GetPropertyTypeByIdAsync(id);
             if (propertyType == null)
             {

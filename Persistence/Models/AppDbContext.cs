@@ -41,8 +41,6 @@
 
         public DbSet<Questionnaire> Questionnaires { get; set; }
 
-        public DbSet<QuestionnaireUserComments> QuestionnaireUserComments { get; set; }
-
         public DbSet<QuestionnaireUserVotes> QuestionnaireUserVotes { get; set; }
 
         public DbSet<PropertiesExpenses> PropertiesExpenses { get; set; }
@@ -109,18 +107,12 @@
                         q.Property(p => p.DateTimeCreated).IsRequired();
                     });
 
-            modelBuilder.Entity<QuestionnaireUserComments>(
-                q =>
-                    {
-                        q.Property(p => p.Comment).IsRequired();
-                        q.Property(p => p.CommentDate).IsRequired();
-                    });
 
             modelBuilder.Entity<Meeting>(
                 m =>
                     {
                         m.Property(p => p.Location).IsRequired();
-                        m.Property(p => p.DateAndTime).IsRequired();
+                        m.Property(p => p.DateTime).IsRequired();
                     });
 
             modelBuilder.Entity<AppUsersRoles>().HasKey(ur => new { ur.AppUserId, ur.AppRoleId });
@@ -194,30 +186,6 @@
                 .HasOne(quv => quv.Questionnaire)
                 .WithMany(quv => quv.QuestionnaireUserVotes)
                 .HasForeignKey(quv => quv.QuestionnaireId);
-
-            modelBuilder.Entity<QuestionnaireUserComments>().HasKey(quc => new { quc.QuestionnaireId, quc.AppUserId });
-
-            modelBuilder.Entity<QuestionnaireUserComments>()
-                .HasOne(quc => quc.Questionnaire)
-                .WithMany(quc => quc.QuestionnaireUserComments)
-                .HasForeignKey(quc => quc.QuestionnaireId);
-
-            modelBuilder.Entity<QuestionnaireUserComments>()
-                .HasOne(quc => quc.User)
-                .WithMany(quc => quc.QuestionnaireUserComments)
-                .HasForeignKey(quc => quc.AppUserId);
-
-            modelBuilder.Entity<UsersFavouriteQuestionnaires>().HasKey(u => new { u.AppUserId, u.QuestionnaireId });
-
-            modelBuilder.Entity<UsersFavouriteQuestionnaires>()
-                .HasOne(u => u.AppUser)
-                .WithMany(u => u.UsersFavouriteQuestionnaires)
-                .HasForeignKey(u => u.AppUserId);
-
-            modelBuilder.Entity<UsersFavouriteQuestionnaires>()
-                .HasOne(u => u.Questionnaire)
-                .WithMany(u => u.UsersFavouriteQuestionnaires)
-                .HasForeignKey(u => u.QuestionnaireId);
         }
     }
 }

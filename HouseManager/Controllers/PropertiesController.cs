@@ -9,7 +9,7 @@ namespace HouseManager.Controllers
     using System.Collections.Generic;
 
     using BLL;
-    using BLL.Models;
+
     using Persistence.Models;
     using global::AutoMapper;
 

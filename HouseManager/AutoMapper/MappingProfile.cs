@@ -18,7 +18,8 @@ namespace HouseManager.AutoMapper
     {
         public MappingProfile()
         {
-            CreateMap<Property, PropertyViewModel>().ForMember(x => x.Id, opts => opts.MapFrom(src => src.Id))
+            CreateMap<Property, PropertyViewModel>().
+                ForMember(x => x.Id, opts => opts.MapFrom(src => src.Id))
                 .ForMember(x => x.AppUser, opts => opts.MapFrom(src => src.AppUser))
                 .ForMember(x => x.AppUserId, opts => opts.MapFrom(src => src.AppUserId))
                 .ForMember(x => x.Area, opts => opts.MapFrom(src => src.Area))
@@ -28,7 +29,12 @@ namespace HouseManager.AutoMapper
                     x => x.BuildingName,
                     opts => opts.MapFrom(src => CreateBuildingName(src)));
 
-            //CreateMap<Property, PropertyViewModel>();
+            CreateMap<Questionnaire, QuestionnaireViewModel>()
+                .ForMember(x => x.Id, opts => opts.MapFrom(src => src.Id)).
+                ForMember(x => x.Question, opts => opts.MapFrom(src => src.Question));
+
+            CreateMap<MeetingViewModel, Meeting>();
+            CreateMap<Meeting, MeetingViewModel>();
             CreateMap<PropertyViewModel, Property>();
             CreateMap<PropertyType, PropertyTypeViewModel>();
             CreateMap<AppUser, AppUserViewModel>();

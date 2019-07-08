@@ -1,0 +1,50 @@
+@model IEnumerable<HouseManager.ViewModels.MeetingViewModel>
+
+@{
+    ViewData["Title"] = "Meetings";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Meetings</h2>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Datetime)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Location)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comments)
+        </th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Datetime)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comments)
+            </td>
+            <td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>|
+                <a asp-action="AssignIssues" asp-route-id="@item.Id">Assign issues</a>|
+            </td>
+        </tr>
+    }
+    </tbody>
+</table>

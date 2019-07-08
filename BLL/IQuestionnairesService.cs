@@ -9,7 +9,7 @@
 
     public interface IQuestionnairesService
     {
-        Task AddAsync(Questionnaire quest);
+        Task AddAsync(string question, string userName);
 
         Task DeleteAsync(int questId);
 
@@ -17,6 +17,13 @@
 
         Task<Questionnaire> GetQuestionnaireByIdAsync(int questId);
 
-        Task UpdateAsync(Questionnaire questionnaire);
+        Task UpdateAsync(int id, string question);
+
+        Task ToggleVoteAsync(int questId, string userName);
+
+        Task<IEnumerable<QuestionnaireUserVotes>> GetVotes(int questId);
+
+        Task<bool> IsActive(int questId);
+
     }
 }

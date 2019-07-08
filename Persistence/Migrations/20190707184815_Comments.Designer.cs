@@ -8,9 +8,10 @@ using Persistence.Models;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190707184815_Comments")]
+    partial class Comments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -111,6 +112,8 @@ namespace DAL.Migrations
 
                     b.Property<string>("Phone");
 
+                    b.Property<int>("Rank");
+
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers");
@@ -151,7 +154,7 @@ namespace DAL.Migrations
 
                     b.Property<string>("Comments");
 
-                    b.Property<DateTime>("DateTime");
+                    b.Property<DateTime>("DateAndTime");
 
                     b.Property<string>("Location")
                         .IsRequired();
@@ -260,6 +263,19 @@ namespace DAL.Migrations
                     b.ToTable("QuestionnaireUserVotes");
                 });
 
+            modelBuilder.Entity("Persistence.Models.UsersFavouriteQuestionnaires", b =>
+                {
+                    b.Property<int>("AppUserId");
+
+                    b.Property<int>("QuestionnaireId");
+
+                    b.HasKey("AppUserId", "QuestionnaireId");
+
+                    b.HasIndex("QuestionnaireId");
+
+                    b.ToTable("UsersFavouriteQuestionnaires");
+                });
+
             modelBuilder.Entity("DAL.Models.BuildingProperties", b =>
                 {
                     b.HasOne("DAL.Models.Building", "Building")
@@ -354,6 +370,19 @@ namespace DAL.Migrations
                     b.HasOne("Persistence.Models.Identity.AppUser", "AppUser")
                         .WithMany("QuestionnaireUserVotes")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("Persistence.Models.UsersFavouriteQuestionnaires", b =>
+                {
+                    b.HasOne("Persistence.Models.Identity.AppUser", "AppUser")
+                        .WithMany("UsersFavouriteQuestionnaires")
+                        .HasForeignKey("AppUserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("Persistence.Models.Questionnaire", "Questionnaire")
+                        .WithMany("UsersFavouriteQuestionnaires")
+                        .HasForeignKey("QuestionnaireId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }

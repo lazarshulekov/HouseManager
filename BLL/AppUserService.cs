@@ -114,6 +114,11 @@ namespace BLL
             throw new System.NotImplementedException();
         }
 
+        public async Task<AppUser> GetAppUserByUserNameAsync(string userName)
+        {
+            return await userManager.FindByNameAsync(userName);
+        }
+
         public Task UpdateAsync(AppUser usr)
         {
             throw new System.NotImplementedException();
@@ -138,7 +143,7 @@ namespace BLL
             return userRoles.Single();
         }
 
-        public async Task<int> GetUserIdByUserName(string userName)
+        public async Task<int> GetUserIdByUserNameAsync(string userName)
         {
             var user = await userManager.FindByEmailAsync(userName);
             return user.Id;

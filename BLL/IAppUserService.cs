@@ -17,6 +17,8 @@
 
         Task<AppUser> GetAppUserByIdAsync(int usrId);
 
+        Task<AppUser> GetAppUserByUserNameAsync(string userName);
+
         Task UpdateAsync(AppUser usr);
 
         Task<IEnumerable<AppUser>> GetHouseManagersAsync();
@@ -37,6 +39,6 @@
 
         Task<string> GetUserRole(string userName);
 
-        Task<int> GetUserIdByUserName(string userName);
+        Task<int> GetUserIdByUserNameAsync(string userName);
     }
 }

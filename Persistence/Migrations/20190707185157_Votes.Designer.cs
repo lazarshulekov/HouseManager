@@ -8,9 +8,10 @@ using Persistence.Models;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190707185157_Votes")]
+    partial class Votes
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.2")
@@ -111,6 +112,8 @@ namespace DAL.Migrations
 
                     b.Property<string>("Phone");
 
+                    b.Property<int>("Rank");
+
                     b.HasKey("Id");
 
                     b.ToTable("AppUsers");
@@ -151,7 +154,7 @@ namespace DAL.Migrations
 
                     b.Property<string>("Comments");
 
-                    b.Property<DateTime>("DateTime");
+                    b.Property<DateTime>("DateAndTime");
 
                     b.Property<string>("Location")
                         .IsRequired();

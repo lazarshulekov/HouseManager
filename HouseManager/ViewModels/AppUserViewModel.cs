@@ -37,7 +37,7 @@
                 .FindByNameAsync(((AppUserViewModel)validationContext.ObjectInstance).FirstName);
             if (user.Result != null)
             {
-                yield return new ValidationResult("You suck", new string[] { "FirstName" });
+                yield return new ValidationResult("Cannot find", new string[] { "FirstName" });
             }
         }
     }
