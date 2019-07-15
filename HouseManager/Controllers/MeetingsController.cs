@@ -88,7 +88,7 @@ namespace HouseManager.Controllers
                 questionnaire.Likes = votes.Count;
             }
 
-            var meetingIssues = meeting.MeetingsIssues != null ? meeting.MeetingsIssues.Select(q => q.IssueId): new List<int>();
+            var meetingIssues = meeting.MeetingsQuestionnaires != null ? meeting.MeetingsQuestionnaires.Select(q => q.QuestionnaireId): new List<int>();
 
              MultiSelectList options =
                 new MultiSelectList(questViewModels, "Id", "QuestionAndLikes", meetingIssues);

@@ -18,5 +18,7 @@
         public virtual AppUser CreatedByAppUser { get; set; }
 
         public ICollection<QuestionnaireUserVotes> QuestionnaireUserVotes { get; set; }
+
+        public ICollection<MeetingsQuestionnaires> MeetingsQuestionnaires { get; set; }
     }
 }

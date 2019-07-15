@@ -48,7 +48,7 @@ namespace HouseManager.AutoMapper
                 .ForMember(x => x.Comments, opts => opts.MapFrom(src => src.Comments))
                 .ForMember(x => x.DateTime, opts => opts.MapFrom(src => src.DateTime))
                 .ForMember(x => x.Location, opts => opts.MapFrom(src => src.Location))
-                .ForMember(x => x.MeetingsIssues, opts => opts.MapFrom(src => CreateMeetingIssues(src.SelectedIssues, src.Id)));
+                .ForMember(x => x.MeetingsQuestionnaires, opts => opts.MapFrom(src => CreateMeetingIssues(src.SelectedIssues, src.Id)));
 
             CreateMap<Meeting, MeetingViewModel>();
             CreateMap<PropertyViewModel, Property>();
@@ -73,9 +73,9 @@ namespace HouseManager.AutoMapper
                        : string.Empty;
         }
 
-        private List<MeetingsIssues> CreateMeetingIssues(IEnumerable<int> selectedIssues, int meetingId)
+        private List<MeetingsQuestionnaires> CreateMeetingIssues(IEnumerable<int> selectedIssues, int meetingId)
         {
-            return selectedIssues.Select(x => new MeetingsIssues { IssueId = x, MeetingId = meetingId }).ToList();
+            return selectedIssues.Select(x => new MeetingsQuestionnaires { QuestionnaireId = x, MeetingId = meetingId }).ToList();
         }
     }
 }

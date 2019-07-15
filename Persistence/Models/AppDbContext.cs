@@ -5,7 +5,7 @@
     using Microsoft.EntityFrameworkCore;
     using Microsoft.Extensions.Logging;
 
-    using Persistence.Models;
+    using Models;
 
     public class AppDbContext : DbContext
     {
@@ -31,9 +31,9 @@
 
         public DbSet<Expense> Expenses { get; set; }
 
-        public DbSet<Issue> Issues { get; set; }
-
         public DbSet<Meeting> Meetings { get; set; }
+
+        public DbSet<MeetingsQuestionnaires> MeetingsQuestionnaires { get; set; }
 
         public DbSet<Property> Properties { get; set; }
 
@@ -83,7 +83,7 @@
             modelBuilder.Entity<AppRole>(ar => ar.Property(p => p.Name).IsRequired());
 
             modelBuilder.Entity<Expense>(e => e.Property(p => p.Name).IsRequired());
-            modelBuilder.Entity<Issue>(i => i.Property(p => p.Name).IsRequired());
+            //modelBuilder.Entity<Issue>(i => i.Property(p => p.Name).IsRequired());
             modelBuilder.Entity<QuestionnaireUserVotes>(i => i.Property(p => p.Agrees).IsRequired());
             modelBuilder.Entity<PropertyType>(i => i.Property(p => p.Type).IsRequired());
             modelBuilder.Entity<Building>(
@@ -146,18 +146,18 @@
                 .WithMany(b => b.BuildingHouseManagers)
                 .HasForeignKey(bp => bp.HouseManagerId);
 
-            modelBuilder.Entity<Issue>(ar => ar.Property(p => p.Id).ValueGeneratedNever());
+            //modelBuilder.Entity<Issue>(ar => ar.Property(p => p.Id).ValueGeneratedNever());
 
-            modelBuilder.Entity<MeetingsIssues>().HasKey(mi => new { mi.IssueId, mi.MeetingId });
+            modelBuilder.Entity<MeetingsQuestionnaires>().HasKey(mi => new { mi.QuestionnaireId, mi.MeetingId });
 
-            modelBuilder.Entity<MeetingsIssues>()
-                .HasOne(mi => mi.Issue)
-                .WithMany(mi => mi.MeetingsIssues)
-                .HasForeignKey(mi => mi.IssueId);
+            modelBuilder.Entity<MeetingsQuestionnaires>()
+                .HasOne(mi => mi.Questionnaire)
+                .WithMany(mi => mi.MeetingsQuestionnaires)
+                .HasForeignKey(mi => mi.QuestionnaireId);
 
-            modelBuilder.Entity<MeetingsIssues>()
+            modelBuilder.Entity<MeetingsQuestionnaires>()
                 .HasOne(mi => mi.Meeting)
-                .WithMany(mi => mi.MeetingsIssues)
+                .WithMany(mi => mi.MeetingsQuestionnaires)
                 .HasForeignKey(mi => mi.MeetingId);
 
             modelBuilder.Entity<PropertiesExpenses>().HasKey(ue => new { ue.ExpenseId, ue.PropertyId });

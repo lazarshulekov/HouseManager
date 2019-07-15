@@ -2,6 +2,7 @@ namespace BLL
 {
     using System;
     using System.Collections.Generic;
+    using System.IO;
     using System.Linq;
     using System.Threading.Tasks;
 
@@ -9,11 +10,10 @@ namespace BLL
 
     using Microsoft.EntityFrameworkCore;
 
-    using Persistence.Models;
-
     public class MeetingService : IMeetingService
     {
         private readonly TimeSpan questionnairesInterval = TimeSpan.FromDays(30);
+
         private readonly AppDbContext context;
 
         public MeetingService(AppDbContext context)
@@ -28,39 +28,26 @@ namespace BLL
 
         public async Task AddAsync(Meeting meeting)
         {
-            foreach (var issue in meeting.MeetingsIssues)
-            {
-                var quest = await context.Questionnaires.FindAsync(issue.IssueId);
-                var issueEntity = await this.context.Issues.FindAsync(issue.IssueId);
-                if (issueEntity == null)
-                {
-                    issueEntity = new Issue() { Id = quest.Id, Name = quest.Question };
-                    await context.Issues.AddAsync(issueEntity);
-                    await context.SaveChangesAsync();
-                }
-            }
-            
-            context.Meetings.Add(meeting);
+            await context.MeetingsQuestionnaires.AddRangeAsync(meeting.MeetingsQuestionnaires);
+            await context.Meetings.AddAsync(meeting);
             await context.SaveChangesAsync();
         }
 
         public async Task UpdateAsync(Meeting meeting)
         {
             var meetingEntity = await context.Meetings.FindAsync(meeting.Id);
-            var meetingIssues = meetingEntity.MeetingsIssues;
-            foreach (var issue in meetingIssues)
+            var meetingsQuestionnaires = meetingEntity.MeetingsQuestionnaires;
+
+            var existingQuests = meetingsQuestionnaires.Where(x => meeting.MeetingsQuestionnaires.Any(g => g.QuestionnaireId == x.QuestionnaireId)).ToList();
+            if (existingQuests.Any())
             {
-                var issueEntity = this.context.Issues.FindAsync(issue.IssueId);
-                if (issueEntity == null)
-                {
-                    var ques
-                    this.context.Issues.AddAsync(new Issue())
-                }
+                context.MeetingsQuestionnaires.RemoveRange(existingQuests);
             }
+
             meetingEntity.DateTime = meeting.DateTime;
             meetingEntity.Location = meeting.Location;
             meetingEntity.Comments = meeting.Comments;
-            meetingEntity.MeetingsIssues = meeting.MeetingsIssues;
+            meetingEntity.MeetingsQuestionnaires = meeting.MeetingsQuestionnaires;
             context.Meetings.Update(meetingEntity);
             await context.SaveChangesAsync();
         }
@@ -68,7 +55,12 @@ namespace BLL
         public async Task DeleteAsync(int id)
         {
             var meeting = await context.Meetings.FindAsync(id);
+            var quests = meeting.MeetingsQuestionnaires;
             context.Meetings.Remove(meeting);
+            if (quests != null && quests.Any())
+            {
+                context.MeetingsQuestionnaires.RemoveRange(quests);
+            }
 
             await context.SaveChangesAsync();
         }

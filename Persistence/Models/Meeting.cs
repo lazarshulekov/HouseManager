@@ -13,6 +13,6 @@
 
         public string Comments { get; set; }
 
-        public ICollection<MeetingsIssues> MeetingsIssues { get; set; }
+        public ICollection<MeetingsQuestionnaires> MeetingsQuestionnaires { get; set; }
     }
 }

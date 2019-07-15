@@ -8,8 +8,8 @@ using DAL.Models;
 namespace DAL.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20190708193730_Issue")]
-    partial class Issue
+    [Migration("20190715164744_issueToQuest")]
+    partial class issueToQuest
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,17 +147,19 @@ namespace DAL.Migrations
                     b.ToTable("Meetings");
                 });
 
-            modelBuilder.Entity("DAL.Models.MeetingsIssues", b =>
+            modelBuilder.Entity("DAL.Models.MeetingsQuestionnaires", b =>
                 {
-                    b.Property<int>("IssueId");
+                    b.Property<int>("QuestionnaireId");
 
                     b.Property<int>("MeetingId");
 
-                    b.HasKey("IssueId", "MeetingId");
+                    b.Property<bool>("Accepted");
+
+                    b.HasKey("QuestionnaireId", "MeetingId");
 
                     b.HasIndex("MeetingId");
 
-                    b.ToTable("MeetingsIssues");
+                    b.ToTable("MeetingsQuestionnaires");
                 });
 
             modelBuilder.Entity("DAL.Models.PropertiesExpenses", b =>
@@ -246,20 +248,6 @@ namespace DAL.Migrations
                     b.ToTable("QuestionnaireUserVotes");
                 });
 
-            modelBuilder.Entity("Persistence.Models.Issue", b =>
-                {
-                    b.Property<int>("Id");
-
-                    b.Property<bool>("Accepted");
-
-                    b.Property<string>("Name")
-                        .IsRequired();
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Issues");
-                });
-
             modelBuilder.Entity("DAL.Models.BuildingHousemanagers", b =>
                 {
                     b.HasOne("DAL.Models.Building", "Building")
@@ -299,16 +287,16 @@ namespace DAL.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("DAL.Models.MeetingsIssues", b =>
+            modelBuilder.Entity("DAL.Models.MeetingsQuestionnaires", b =>
                 {
-                    b.HasOne("Persistence.Models.Issue", "Issue")
-                        .WithMany("MeetingsIssues")
-                        .HasForeignKey("IssueId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("DAL.Models.Meeting", "Meeting")
                         .WithMany("MeetingsIssues")
                         .HasForeignKey("MeetingId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("DAL.Models.Questionnaire", "Questionnaire")
+                        .WithMany("MeetingsQuestionnaires")
+                        .HasForeignKey("QuestionnaireId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
