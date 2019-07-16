@@ -35,20 +35,18 @@ namespace BLL
 
         public async Task UpdateAsync(Meeting meeting)
         {
-            var meetingEntity = await context.Meetings.FindAsync(meeting.Id);
-            var meetingsQuestionnaires = meetingEntity.MeetingsQuestionnaires;
+            var mqs = context.MeetingsQuestionnaires.Where(x => x.MeetingId == meeting.Id);
 
-            var existingQuests = meetingsQuestionnaires.Where(x => meeting.MeetingsQuestionnaires.Any(g => g.QuestionnaireId == x.QuestionnaireId)).ToList();
-            if (existingQuests.Any())
-            {
-                context.MeetingsQuestionnaires.RemoveRange(existingQuests);
-            }
+            context.MeetingsQuestionnaires.RemoveRange(mqs);
+            await context.SaveChangesAsync();
+
+            var meetingEntity = await context.Meetings.FindAsync(meeting.Id);
 
             meetingEntity.DateTime = meeting.DateTime;
             meetingEntity.Location = meeting.Location;
             meetingEntity.Comments = meeting.Comments;
             meetingEntity.MeetingsQuestionnaires = meeting.MeetingsQuestionnaires;
-            context.Meetings.Update(meetingEntity);
+            
             await context.SaveChangesAsync();
         }
 
@@ -67,7 +65,7 @@ namespace BLL
 
         public async Task<Meeting> GetMeetingByIdAsync(int id)
         {
-            return await context.Meetings.FindAsync(id);
+            return context.Meetings.Where(x => x.Id == id ).Include(x => x.MeetingsQuestionnaires).SingleOrDefault();
         }
 
         public async Task<List<Questionnaire>> GetAllQuestionnaires()

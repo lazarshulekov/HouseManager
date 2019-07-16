@@ -28,28 +28,37 @@
                     <th>
                         @Html.DisplayNameFor(model => model.Phone)
                     </th>
+                    <th>
+                        @Html.DisplayNameFor(model => model.Banned)
+                    </th>
                     <th></th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.FirstName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.LastName)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Email)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Phone)
-                        </td>
-                        <td>
-                            <a asp-controller="Buildings" asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                            <a asp-controller="Buildings" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.LastName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Phone)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Banned)
+                    </td>
+                    <td>
+                        @if (!((bool)ViewData["IsPropertyOwner"]))
+                        {
+                            <a asp-controller="Account" asp-action="Delete" asp-route-id="@item.Id">Delete</a> @:|
+                            <a asp-controller="Account" asp-action="ToggleBanned" asp-route-id="@item.Id">Mark as Banned</a>
+                        }
                         </td>
                     </tr>
                 }

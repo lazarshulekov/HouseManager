@@ -1,6 +1,7 @@
 ﻿namespace DAL.Models
 {
     using System.Collections.Generic;
+    using System.ComponentModel;
 
     public class BuildingViewModel
     {
@@ -12,6 +13,7 @@
 
         public int Number { get; set; }
 
+        [DisplayName("HouseManagers")]
         public ICollection<BuildingHousemanagers> BuildingHouseManagers { get; set; }
 
         public ICollection<BuildingProperties> BuildingProperties { get; set; }

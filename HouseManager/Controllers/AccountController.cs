@@ -37,6 +37,8 @@
 
         public async Task<IActionResult> Index()
         {
+            ViewData["IsPropertyOwner"] =
+                (await appUserService.GetUserRole(User.Identity.Name)) == "PropertyOwner";
             var users = await appUserService.GetAllAppUsersAsync();
             return View(users);
         }
@@ -160,6 +162,13 @@
             }
 
             return View(user);
+        }
+
+        public async Task<IActionResult> ToggleBanned(int id)
+        {
+            await appUserService.ToggleBannedAsync(id);
+
+            return RedirectToAction("Index", "Account");
         }
     }
 }

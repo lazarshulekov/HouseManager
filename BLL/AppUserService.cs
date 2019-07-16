@@ -148,5 +148,13 @@ namespace BLL
             var user = await userManager.FindByEmailAsync(userName);
             return user.Id;
         }
+
+        public async Task ToggleBannedAsync(int id)
+        {
+            var userEntity = await auContext.AppUsers.FindAsync(id);
+            userEntity.Banned = !userEntity.Banned;
+
+            await auContext.SaveChangesAsync();
+        }
     }
 }

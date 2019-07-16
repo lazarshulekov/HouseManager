@@ -17,7 +17,7 @@
 
         public PropertyTypeViewModel PropertyType { get; set; }
 
-        [DisplayName("User")]
+        [DisplayName("Owner")]
         public int AppUserId { get; set; }
 
         public AppUserViewModel AppUser { get; set; }

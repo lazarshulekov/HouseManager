@@ -4,8 +4,6 @@
     using System.Linq;
     using System.Threading.Tasks;
 
-    using AutoMapper;
-
     using DAL.Models;
 
     using Microsoft.EntityFrameworkCore;
@@ -14,12 +12,9 @@
     {
         private readonly AppDbContext context;
 
-        private readonly IMapper mapper;
-
-        public PropertyService(AppDbContext context, IMapper mapper)
+        public PropertyService(AppDbContext context)
         {
             this.context = context;
-            this.mapper = mapper;
         }
 
         public async Task<IEnumerable<Property>> GetAllPropertiesAsync()

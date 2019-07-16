@@ -32,7 +32,8 @@ namespace HouseManager.Controllers
         public async Task<ActionResult> Index()
         {
             var questViewModels = await GetQuestionnaireViewModels();
-
+            ViewData["IsPropertyOwner"] =
+                (await appUserService.GetUserRole(User.Identity.Name)) == "PropertyOwner";
             return View(questViewModels);
         }
 

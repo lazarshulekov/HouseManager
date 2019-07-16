@@ -59,7 +59,7 @@ namespace HouseManager.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Create(
-            [Bind("MeetingId,Comments,Datetime,Location,SelectedIssues")]
+            [Bind("MeetingId,Comments,DateTime,Location,SelectedIssues")]
             MeetingViewModel meeting)
         {
             if (!ModelState.IsValid) return View(meeting);
@@ -120,6 +120,13 @@ namespace HouseManager.Controllers
             await meetingService.DeleteAsync(id);
 
             return RedirectToAction("Index");
+        }
+
+        public async Task<ActionResult> GetMeetingQuests(int id)
+        {
+            var meeting = await meetingService.GetMeetingByIdAsync(id);
+            var quests = meeting.MeetingsQuestionnaires.Select(x => new { name = x.Questionnaire.Question }).ToList();
+            return Json(quests);
         }
     }
 }

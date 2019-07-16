@@ -2,9 +2,8 @@
 {
     using System.Collections.Generic;
 
-    public class AppUser // : IdentityUser<int>
+    public class AppUser
     {
-        // <int, IdentityUserClaim<AppUser>, IdentityUserRole<AppUser>, IdentityUserLogin<AppUser>, IdentityUserToken<AppUser>>
         public int Id { get; set; }
 
         public string Password { get; set; }

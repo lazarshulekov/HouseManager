@@ -13,9 +13,15 @@
 <table class="table">
     <thead>
         <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Question)
-                </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Question)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Voted)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Likes)
+            </th>
             <th></th>
         </tr>
     </thead>
@@ -33,11 +39,14 @@
             </td>
             <td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>|
-                
-                @if(item.IsActive) {
-                <a asp-action="ToggleVote" asp-route-id="@item.Id">ToggleVote</a>
+            @if (!((bool)ViewData["IsPropertyOwner"]))
+            {
+                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> 
+                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            }
+                @if (item.IsActive)
+                {
+                    <a asp-action="ToggleVote" asp-route-id="@item.Id">ToggleVote</a>
                 }
                 else
                 {

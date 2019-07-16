@@ -40,5 +40,7 @@
         Task<string> GetUserRole(string userName);
 
         Task<int> GetUserIdByUserNameAsync(string userName);
+
+        Task ToggleBannedAsync(int id);
     }
 }

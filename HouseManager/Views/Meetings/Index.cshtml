@@ -5,6 +5,55 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script type="text/javascript">
+    $(document).ready(function() {
+        $("#createPdf").click(function() {
+            var val = $(this).attr('val');
+            $.getJSON("@Url.Action("GetMeetingQuests", "Meetings")",
+                { id: val },
+                function(result) {
+                    CreateReport(result);
+                });
+        });
+        function CreateReport(result) {
+            var raws = "";
+            jQuery.each(result,
+                function(i, data) {
+                    raws = raws + "<tr><td>" + data.name + "</td><td><div id='checker'></div> </td></tr>";
+                });
+
+            
+            var html_ticket = '<!doctype html>' +
+                '<html dir="ltr" lang="en" class="no-js">' +
+                '<head> ' +
+            '     <style> ' +
+            ' #checker { ' +
+            '     border: 1px solid black; ' +
+            '     width: 10px;             ' +
+            '     height: 10px;            ' +
+            '     display: inline-block;   ' +
+            '     margin: 10px;            ' +
+            ' }                            ' +
+            ' table, th, td {              ' +
+            '     border: 1px solid black; ' +
+            ' }                            ' +
+            ' td{ padding:10px}'    +
+            ' caption {font-size:20px; padding :10px} ' +
+            ' </style>                     ' +
+                '   <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"></head><body> ' +
+                ' <table><caption>Meeting questions</caption><tbody>' +
+                raws +
+                ' </tbody> </table>' +
+                '</body> ' +
+                '</html> ';
+            var newWindow = window.open();
+            newWindow.document.write(html_ticket);
+            newWindow.document.close();
+        }
+    });
+    
+</script>
+
 <h2>Meetings</h2>
 
 <p>
@@ -12,39 +61,39 @@
 </p>
 <table class="table">
     <thead>
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.DateTime)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Location)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Comments)
-        </th>
-        <th></th>
-    </tr>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.DateTime)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Comments)
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateTime)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Comments)
-            </td>
-            <td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                <a asp-action="CreatePdf" asp-route-id="@item.Id">CreatePdf</a>|
-            </td>
-        </tr>
-    }
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateTime)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Location)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Comments)
+                </td>
+                <td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
+                    <button id="createPdf" val="@item.Id" >CreatePdf</button>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -29,7 +29,7 @@
 
         public int Rank { get; set; }
 
-        public bool Banned { get; set; } // banned users cannot create Questionnaires
+        public bool Banned { get; set; }
 
         public IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
         {
