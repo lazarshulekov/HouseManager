@@ -9,23 +9,16 @@ namespace HouseManager.Controllers
     using System.Collections.Generic;
 
     using BLL;
-
     using DAL.Models;
-
     using global::AutoMapper;
-
     using HouseManager.ViewModels;
 
     public class PropertiesController : Controller
     {
         private readonly IPropertyService propertyService;
-
         private readonly IPropertyTypeService propertyTypeService;
-
         private readonly IBuildingService buildingService;
-
         private readonly IAppUserService appUserService;
-
         private readonly IMapper mapper;
 
         public PropertiesController(

@@ -14,7 +14,6 @@
     using HouseManager.ViewModels;
 
     using Microsoft.AspNetCore.Authorization;
-    using Microsoft.AspNetCore.Identity;
     using Microsoft.AspNetCore.Mvc;
 
     public class AccountController : Controller
@@ -26,8 +25,6 @@
         private readonly IAppUserService appUserService;
 
         public AccountController(
-            UserManager<AppUser> userManager,
-            SignInManager<AppUser> signInManager,
             IMapper mapper,
             IAppUserService appUserService)
         {

@@ -10,10 +10,6 @@
     {
         public ILogger CreateLogger(string categoryName)
         {
-            // NOTE: This sample uses EF Core 1.1. If using EF Core 1.0, then use 
-            //       Microsoft.EntityFrameworkCore.Storage.Internal.RelationalCommandBuilderFactory
-            //       rather than IRelationalCommandBuilderFactory
-
             if (categoryName == typeof(IRelationalCommandBuilderFactory).FullName)
             {
                 return new MyLogger();

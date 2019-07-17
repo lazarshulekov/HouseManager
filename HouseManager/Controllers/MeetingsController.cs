@@ -20,9 +20,7 @@ namespace HouseManager.Controllers
     public class MeetingsController : Controller
     {
         private readonly IMapper mapper;
-
         private readonly IMeetingService meetingService;
-
         private readonly IQuestionnairesService questionnairesService;
 
         public MeetingsController(IMapper mapper, IMeetingService meetingService, IQuestionnairesService questionnairesService)

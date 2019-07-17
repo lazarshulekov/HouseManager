@@ -19,15 +19,10 @@ namespace HouseManager.Controllers
     public class ExpensesController : Controller
     {
         private readonly IBuildingService buildingService;
-
         private readonly IPropertyService propertyService;
-
         private readonly IExpensesService expensesService;
-
         private readonly IPropertyTypeService propertyTypeService;
-
         private readonly IAppUserService appUserService;
-
         private readonly IMapper mapper;
 
         public ExpensesController(

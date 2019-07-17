@@ -15,10 +15,8 @@ namespace HouseManager.Controllers
 
     public class QuestionnairesController : Controller
     {
-        public IMapper Mapper { get; }
-
+        private readonly IMapper Mapper;
         private readonly IQuestionnairesService questionnairesService;
-
         private readonly IAppUserService appUserService;
 
         public QuestionnairesController(IQuestionnairesService questionnairesService, IAppUserService appUserService, IMapper mapper)

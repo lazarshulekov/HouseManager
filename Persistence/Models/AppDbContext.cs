@@ -83,7 +83,7 @@
             modelBuilder.Entity<AppRole>(ar => ar.Property(p => p.Name).IsRequired());
 
             modelBuilder.Entity<Expense>(e => e.Property(p => p.Name).IsRequired());
-            //modelBuilder.Entity<Issue>(i => i.Property(p => p.Name).IsRequired());
+
             modelBuilder.Entity<QuestionnaireUserVotes>(i => i.Property(p => p.Agrees).IsRequired());
             modelBuilder.Entity<PropertyType>(i => i.Property(p => p.Type).IsRequired());
             modelBuilder.Entity<Building>(
