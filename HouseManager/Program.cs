@@ -7,6 +7,10 @@ using Microsoft.AspNetCore.Hosting;
 
 namespace HouseManager
 {
+    using System.Data.Common;
+    using System.Reflection;
+    using System.Xml;
+
     public class Program
     {
         public static void Main(string[] args)

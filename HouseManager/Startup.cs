@@ -12,6 +12,8 @@ namespace HouseManager
 
     using global::AutoMapper;
 
+    using log4net;
+
     using Microsoft.Extensions.Configuration;
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
@@ -65,7 +67,7 @@ namespace HouseManager
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddProvider(new MyFilteredLoggerProvider());
+            loggerFactory.AddLog4Net();
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseStaticFiles();

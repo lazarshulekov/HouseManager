@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace HouseManager.Controllers
 {
     using System;
+    using System.Data.Common;
 
     using BLL;
     using BLL.Models;
@@ -15,6 +16,8 @@ namespace HouseManager.Controllers
     using global::AutoMapper;
 
     using HouseManager.ViewModels;
+
+    using log4net;
 
     public class ExpensesController : Controller
     {
@@ -31,7 +34,8 @@ namespace HouseManager.Controllers
             IAppUserService appUserService,
             IMapper mapper,
             IBuildingService buildingService,
-            IExpensesService expensesService)
+            IExpensesService expensesService,
+            ILog logger)
         {
             this.propertyService = propertyService;
             this.propertyTypeService = propertyTypeService;
