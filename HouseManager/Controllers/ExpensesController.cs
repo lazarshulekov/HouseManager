@@ -17,8 +17,6 @@ namespace HouseManager.Controllers
 
     using HouseManager.ViewModels;
 
-    using log4net;
-
     public class ExpensesController : Controller
     {
         private readonly IBuildingService buildingService;
@@ -34,8 +32,7 @@ namespace HouseManager.Controllers
             IAppUserService appUserService,
             IMapper mapper,
             IBuildingService buildingService,
-            IExpensesService expensesService,
-            ILog logger)
+            IExpensesService expensesService)
         {
             this.propertyService = propertyService;
             this.propertyTypeService = propertyTypeService;

@@ -47,7 +47,11 @@ namespace HouseManager
                         o.Password.RequireNonAlphanumeric = false;
                         o.Password.RequiredLength = 6;
                     });
+
             services.AddSingleton<IMeetingService, MeetingService>();
+            services.Decorate<IMeetingService, MeetingServiceLoggerDecorator>();
+            services.Decorate<IMeetingService, MeetingServiceRetryDecorator>();
+            services.Decorate<IMeetingService, MeetingServiceExceptionHandlingDecorator>();
             services.AddTransient<IUserStore<AppUser>, AppUserStore>();
             services.AddTransient<IRoleStore<AppRole>, AppRoleStore>();
             services.AddMvc();
@@ -59,12 +63,10 @@ namespace HouseManager
             services.AddSingleton<IQuestionnairesService, QuestionnaireService>();
 
             services.AddLogging();
-            //services.AddMemoryCache(x => x.ExpirationScanFrequency = TimeSpan.FromSeconds(20));
             services.AddSession();
             services.AddAutoMapper();
         }
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
             loggerFactory.AddLog4Net();
