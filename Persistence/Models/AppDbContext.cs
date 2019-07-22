@@ -9,12 +9,9 @@
 
     public class AppDbContext : DbContext
     {
-        private readonly ILoggerFactory loggerFactory;
-
-        public AppDbContext(DbContextOptions<AppDbContext> options, ILoggerFactory loggerFactory)
+        public AppDbContext(DbContextOptions<AppDbContext> options)
             : base(options)
         {
-            loggerFactory = loggerFactory;
         }
 
         #region DbSets
@@ -52,8 +49,6 @@
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             base.OnConfiguring(optionsBuilder);
-
-            optionsBuilder.UseLoggerFactory(this.loggerFactory);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -145,8 +140,6 @@
                 .HasOne(bp => bp.HouseManager)
                 .WithMany(b => b.BuildingHouseManagers)
                 .HasForeignKey(bp => bp.HouseManagerId);
-
-            //modelBuilder.Entity<Issue>(ar => ar.Property(p => p.Id).ValueGeneratedNever());
 
             modelBuilder.Entity<MeetingsQuestionnaires>().HasKey(mi => new { mi.QuestionnaireId, mi.MeetingId });
 

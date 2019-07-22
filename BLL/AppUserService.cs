@@ -10,15 +10,8 @@ namespace BLL
     using Microsoft.AspNetCore.Identity;
     using Microsoft.EntityFrameworkCore;
 
-    public class AppUserService : IAppUserService
+    public partial class AppUserService : IAppUserService
     {
-        public enum UserRole
-        {
-            Administrator,
-            HouseManager,
-            PropertyOwner
-        }
-
         private readonly AppDbContext auContext;
 
         private readonly UserManager<AppUser> userManager;

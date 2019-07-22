@@ -2,8 +2,6 @@
 {
     using System.ComponentModel;
 
-    using BLL.Models;
-
     public class PropertyViewModel
     {
         public int Id { get; set; }

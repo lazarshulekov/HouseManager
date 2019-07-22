@@ -9,7 +9,6 @@ namespace HouseManager.Controllers
     using System.Data.Common;
 
     using BLL;
-    using BLL.Models;
 
     using DAL.Models;
 

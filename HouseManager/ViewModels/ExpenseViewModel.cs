@@ -3,8 +3,6 @@
     using System;
     using System.ComponentModel;
 
-    using BLL.Models;
-
     public class ExpenseViewModel
     {
         public int ExpenseId { get; set; }

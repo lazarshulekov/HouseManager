@@ -5,14 +5,14 @@ using System.Threading.Tasks;
 
 namespace HouseManager.AutoMapper
 {
-    using BLL.Models;
-
     using DAL.Models;
     using DAL.Models.Identity;
 
     using global::AutoMapper;
 
     using HouseManager.ViewModels;
+
+    using BuildingViewModel = HouseManager.ViewModels.BuildingViewModel;
 
     public class MappingProfile : Profile
     {

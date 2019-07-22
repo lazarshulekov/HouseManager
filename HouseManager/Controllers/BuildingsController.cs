@@ -13,6 +13,8 @@ namespace HouseManager.Controllers
     using Microsoft.AspNetCore.Mvc;
     using Microsoft.AspNetCore.Mvc.Rendering;
 
+    using BuildingViewModel = HouseManager.ViewModels.BuildingViewModel;
+
     [Authorize(Roles = "Administrator")]
     public class BuildingsController : Controller
     {
