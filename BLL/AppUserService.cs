@@ -32,9 +32,13 @@ namespace BLL
             this.signInManager = signInManager;
         }
 
-        public async Task<IdentityResult> RegisterUserAsync(AppUser user)
+        public async Task<List<IdentityResult>> RegisterUserAsync(AppUser user)
         {
-            return await userManager.CreateAsync(user, user.Password);
+            List<IdentityResult> results = new List<IdentityResult>();
+
+            results.Add(await userManager.CreateAsync(user, user.Password));
+            results.Add(await userManager.AddToRoleAsync(user, UserRole.Administrator.ToString()));
+            return results;
         }
 
         public async Task AddAsync(AppUser usr)

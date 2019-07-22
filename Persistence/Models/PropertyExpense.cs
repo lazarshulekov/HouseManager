@@ -1,7 +1,5 @@
-namespace BLL.Models
+namespace DAL.Models
 {
-    using DAL.Models;
-
     public class PropertyExpense
     {
         public PropertyType PropertyType { get; set; }

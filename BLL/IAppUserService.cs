@@ -29,7 +29,7 @@
 
         Task<List<IdentityResult>> CreatePropertyOwnerAsync(AppUser user);
 
-        Task<IdentityResult> RegisterUserAsync(AppUser user);
+        Task<List<IdentityResult>> RegisterUserAsync(AppUser user);
 
         Task<SignInResult> SignInAsync(AppUser user);
 

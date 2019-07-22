@@ -7,7 +7,7 @@
 
 <script type="text/javascript">
     $(document).ready(function() {
-        $("#createPdf").click(function() {
+        $("#createTable").click(function() {
             var val = $(this).attr('val');
             $.getJSON("@Url.Action("GetMeetingQuests", "Meetings")",
                 { id: val },
@@ -91,7 +91,7 @@
                 <td>
                     <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> |
-                    <button id="createPdf" val="@item.Id" >CreatePdf</button>
+                    <button id="createTable" val="@item.Id">Create Table</button>
                 </td>
             </tr>
         }

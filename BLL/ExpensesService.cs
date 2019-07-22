@@ -5,8 +5,6 @@ namespace BLL
     using System.Linq;
     using System.Threading.Tasks;
 
-    using BLL.Models;
-
     using DAL.Models;
 
     using Microsoft.EntityFrameworkCore;

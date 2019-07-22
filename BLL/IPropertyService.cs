@@ -4,8 +4,6 @@ namespace BLL
 {
     using System.Threading.Tasks;
 
-    using BLL.Models;
-
     using DAL.Models;
 
     public interface IPropertyService

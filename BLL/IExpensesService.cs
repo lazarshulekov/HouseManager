@@ -3,8 +3,6 @@ using System.Threading.Tasks;
 
 namespace BLL
 {
-    using BLL.Models;
-
     using DAL.Models;
 
     public interface IExpensesService

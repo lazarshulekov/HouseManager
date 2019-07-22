@@ -6,7 +6,6 @@
     using System.Threading.Tasks;
 
     using BLL;
-    using BLL.Models;
 
     using DAL.Models.Identity;
 
@@ -92,15 +91,14 @@
                 var userEntity = mapper.Map<AppUserViewModel, AppUser>(appUserViewModel);
                 var result = await appUserService.RegisterUserAsync(userEntity);
 
-                if (result.Succeeded)
+                if (result.All(r => r.Succeeded))
                 {
                     return RedirectToAction("Index", "Home");
                 }
-                foreach (var identityError in result.Errors)
+                foreach (var identityError in result.SelectMany(x => x.Errors))
                 {
                     ModelState.AddModelError("", identityError.Description);
                 }
-
             }
 
             return View(appUserViewModel);

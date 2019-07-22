@@ -69,11 +69,10 @@ namespace HouseManager
 
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
         {
-            loggerFactory.AddLog4Net();
+            //loggerFactory.AddLog4Net(
             app.UseDeveloperExceptionPage();
             app.UseStatusCodePages();
             app.UseStaticFiles();
-            app.UseIdentity();
             app.UseIdentity();
             app.UseSession();
             app.UseMvc(
