@@ -31,14 +31,12 @@ namespace HouseManager.Controllers
             this.mapper = mapper;
         }
 
-        // GET: Buildings
         public IActionResult Index()
         {
             var buildings = bldService.GetAllBuildings();
             return View(buildings);
         }
 
-        // GET: Buildings/Create
         public async Task<IActionResult> Create()
         {
             ViewBag.AllHouseManagers = await userService.GetHouseManagersAsync();

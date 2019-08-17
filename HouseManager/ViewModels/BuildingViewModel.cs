@@ -2,6 +2,7 @@
 {
     using System.Collections.Generic;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
 
     using DAL.Models;
 
@@ -9,10 +10,13 @@
     {
         public int Id { get; set; }
 
+        [Required]
         public string City { get; set; }
 
+        [Required]
         public string Street { get; set; }
 
+        [Required]
         public int Number { get; set; }
 
         [DisplayName("HouseManagers")]

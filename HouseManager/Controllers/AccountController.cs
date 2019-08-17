@@ -62,12 +62,18 @@
         [HttpPost]
         public async Task<IActionResult> Login(LogInViewModel loginData)
         {
+            if (!ModelState.IsValid)
+            {
+                return View("LogIn");
+            }
+            
             var user = new AppUser { Email = loginData.UserName, Password = loginData.Password };
             var result = await appUserService.SignInAsync(user);
             if (result.Succeeded)
             {
                 return RedirectToAction("Index", "Home");
             }
+
             ModelState.AddModelError("", "Invalid login attempt");
             return View(loginData);
         }
@@ -116,7 +122,6 @@
             [Bind("Email,Password,FirstName,LastName,Phone")] AppUserViewModel user)
         {
             var userEntity = mapper.Map<AppUserViewModel, AppUser>(user);
-            //var result = await _userManager.CreateAsync(userEntity, userEntity.Password);
 
             var result = await appUserService.CreateHouseManagerAsync(userEntity);
 

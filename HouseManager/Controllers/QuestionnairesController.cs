@@ -26,7 +26,6 @@ namespace HouseManager.Controllers
             this.appUserService = appUserService;
         }
 
-        // GET: Questionnaires
         public async Task<ActionResult> Index()
         {
             var questViewModels = await GetQuestionnaireViewModels();
@@ -52,36 +51,32 @@ namespace HouseManager.Controllers
             return questViewModels;
         }
 
-        // GET: Questionnaires/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: Questionnaires/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: Questionnaires/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind("Question")] string question)
+        public async Task<ActionResult> Create([Bind("Question")] QuestionnaireViewModel quest)
         {
             if (ModelState.IsValid)
             {
                 var userName = User.Identity.Name;
-                await questionnairesService.AddAsync(question, userName);
+                await questionnairesService.AddAsync(quest.Question, userName);
 
                 return RedirectToAction("Index");
             }
 
-            return View(question);
+            return View(quest);
 
         }
 
-        // GET: Questionnaires/Edit/5
         public async Task<ActionResult> Edit(int id)
         {
             var quest = await questionnairesService.GetQuestionnaireByIdAsync(id);
@@ -94,7 +89,6 @@ namespace HouseManager.Controllers
             return View(Mapper.Map<QuestionnaireViewModel>(quest));
         }
 
-        // POST: Questionnaires/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Edit(int id, string question)
@@ -104,7 +98,6 @@ namespace HouseManager.Controllers
             return RedirectToAction("Index");
         }
 
-        // GET: Questionnaires/Delete/5
         public async Task<ActionResult> Delete(int id)
         {
             await questionnairesService.DeleteAsync(id);

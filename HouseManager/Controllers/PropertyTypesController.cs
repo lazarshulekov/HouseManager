@@ -22,13 +22,11 @@ namespace HouseManager.Controllers
             this.propertyTypeService = propertyTypeService;
         }
 
-        // GET: PropertyTypes
         public async Task<IActionResult> Index()
         {
             return View(await propertyTypeService.GetAllPropertyTypesAsync());
         }
 
-        // GET: PropertyTypes/Details/5
         public async Task<IActionResult> Details(int id)
         {
             var propertyType = await propertyTypeService.GetPropertyTypeByIdAsync(id);
@@ -40,15 +38,11 @@ namespace HouseManager.Controllers
             return View(propertyType);
         }
 
-        // GET: PropertyTypes/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: PropertyTypes/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Type")] PropertyType propertyType)
@@ -61,7 +55,6 @@ namespace HouseManager.Controllers
             return View(propertyType);
         }
 
-        // GET: PropertyTypes/Edit/5
         public async Task<IActionResult> Edit(int id)
         {
             var propertyType = await propertyTypeService.GetPropertyTypeByIdAsync(id);
@@ -72,9 +65,6 @@ namespace HouseManager.Controllers
             return View(propertyType);
         }
 
-        // POST: PropertyTypes/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Type")] PropertyType propertyType)
@@ -106,7 +96,6 @@ namespace HouseManager.Controllers
             return View(propertyType);
         }
 
-        // GET: PropertyTypes/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var propertyType = await propertyTypeService.GetPropertyTypeByIdAsync(id);
@@ -118,7 +107,6 @@ namespace HouseManager.Controllers
             return View(propertyType);
         }
 
-        // POST: PropertyTypes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)

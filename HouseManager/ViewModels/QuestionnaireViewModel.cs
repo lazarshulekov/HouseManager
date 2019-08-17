@@ -1,9 +1,12 @@
 ﻿namespace HouseManager.ViewModels
 {
+    using System.ComponentModel.DataAnnotations;
+
     public class QuestionnaireViewModel
     {
         public int Id { get; set; }
 
+        [Required]
         public string Question { get; set; }
 
         public int Likes { get; set; }

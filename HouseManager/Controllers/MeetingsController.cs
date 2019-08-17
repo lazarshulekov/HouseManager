@@ -60,7 +60,19 @@ namespace HouseManager.Controllers
             [Bind("MeetingId,Comments,DateTime,Location,SelectedIssues")]
             MeetingViewModel meeting)
         {
-            if (!ModelState.IsValid) return View(meeting);
+            if (!ModelState.IsValid)
+            {
+                var quests = questionnairesService.GetAllQuestionnaires().OrderByDescending(q => q.DateTimeCreated);
+                var questViewModels = mapper.Map<List<MeetingQuestionnaireViewModel>>(quests);
+                foreach (var questionnaire in questViewModels)
+                {
+                    var votes = (await questionnairesService.GetVotes(questionnaire.Id)).ToList();
+                    questionnaire.Likes = votes.Count;
+                }
+
+                ViewBag.AllIssues = questViewModels;
+                return View(meeting);
+            }
 
             var meetingEntity = mapper.Map<Meeting>(meeting);
 

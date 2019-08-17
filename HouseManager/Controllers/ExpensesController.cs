@@ -116,8 +116,9 @@ namespace HouseManager.Controllers
                 return RedirectToAction("Index");
             }
 
-            ViewBag.AllUsers = await appUserService.GetAllAppUsersAsync();
-            ViewBag.AllPropTypes = await propertyTypeService.GetAllPropertyTypesAsync();
+            var allBuildings = buildingService.GetAllBuildings();
+            ViewBag.AllBuildings = allBuildings.Select(
+                b => new IdNameViewModel() { Id = b.Id, Name = $"{b.City} {b.Street} {b.Number}" });
             return View(expenseModel);
         }
 

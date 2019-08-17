@@ -138,12 +138,6 @@ namespace HouseManager.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            //var propEntity = await propertyService.GetPropertyByIdAsync(id);
-
-            //if (propEntity == null)
-            //{
-            //    return NotFound();
-            //}
             await propertyService.DeleteAsync(id);
             return RedirectToAction("Index");
         }

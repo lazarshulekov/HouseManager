@@ -1,6 +1,7 @@
 ﻿namespace DAL.Models
 {
     public class BuildingProperties
+
     {
         public int BuildingId { get; set; }
 
